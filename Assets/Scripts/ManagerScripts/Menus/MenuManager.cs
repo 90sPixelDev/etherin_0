@@ -7,8 +7,8 @@ public class MenuManager : MonoBehaviour
 {
     public GameObject inventoryUI;
     public GameObject cameraGO;
-    public Transform contentWindow;
-    public SelectionManager SelectionManager;
+    //public Transform contentWindow;
+    //public SelectionManager SelectionManager;
 
     public GameObject mainMenuUI;
     public GameObject pointerUI;
@@ -23,7 +23,7 @@ public class MenuManager : MonoBehaviour
 
         inventoryUI.SetActive(false);
         cameraGO = GameObject.Find("Camera");
-        SelectionManager = GameObject.Find("GameManager").GetComponent<SelectionManager>();
+        //SelectionManager = GameObject.Find("GameManager").GetComponent<SelectionManager>();
     }
 
     // Update is called once per frame
