@@ -7,7 +7,6 @@ using TMPro;
 public class SelectionManager : MonoBehaviour
 {
     private Camera fpsCam;
-    private MouseLook MouseLook;
     //private Item selectableItem;
     private Tree treeObject;
     //private Loot lootObject;
@@ -15,7 +14,7 @@ public class SelectionManager : MonoBehaviour
     public TextMeshProUGUI selectableName;
     public Image reticleSprite;
     private GameObject pointerUI;
-    private PlayerMovement PlayerMovement;
+    private CharacterControllerScript characterControllerScript;
     //public ItemsAddedUIManager itemAddedUIScript;
     //private ItemContainer itemContainer;
     //public EquipmentManager equipmentManager;
@@ -51,11 +50,10 @@ public class SelectionManager : MonoBehaviour
         pointerUI = GameObject.Find("PointerUI");
         //SearchingUI = GameObject.Find("SearchingUI");
         fpsCam = GameObject.Find("Camera").GetComponent<Camera>();
-        MouseLook = GameObject.Find("Camera").GetComponent<MouseLook>();
         //itemAddedUIScript = GameObject.Find("Items Added Panel").GetComponent<ItemsAddedUIManager>();
         MenuManager = GameObject.Find("UICanvas").GetComponent<MenuManager>();
         //itemContainer = GameObject.Find("Inventory").GetComponent<ItemContainer>();
-        PlayerMovement = GameObject.Find("FPSPlayer").GetComponent<PlayerMovement>();
+        characterControllerScript = GameObject.Find("FPSPlayer").GetComponent<CharacterControllerScript>();
 
         isLookingAtSelectable = false;
         hasBeenOpened = false;

@@ -23,11 +23,10 @@ public class ClockTime : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        dayNightCycle = GameObject.Find("DayNightCycle").GetComponent<DayNightCycle>();
+        dayNightCycle = GameObject.Find("DayNightCycleNew").GetComponent<DayNightCycle>();
         clockCompletionTime = (dayNightCycle.targetDayLength * 60);
     }
 
-    // Update is called once per frame
     void Update()
     {
         ClockMovement();

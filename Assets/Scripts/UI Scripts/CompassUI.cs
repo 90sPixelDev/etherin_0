@@ -8,10 +8,10 @@ public class CompassUI : MonoBehaviour
     public RawImage compass;
     public Transform player;
 
-    private void Awake()
+    private void Start()
     {
         compass = GameObject.Find("NESW").GetComponent<RawImage>();
-        player = GameObject.Find("FPSPlayer").GetComponent<Transform>();
+        player = GameObject.FindGameObjectWithTag("Player").GetComponent<Transform>();
     }
 
     void Update()

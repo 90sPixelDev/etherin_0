@@ -11,7 +11,7 @@ public class PlayerAnimations : MonoBehaviour
     public float swingTimer = 1;
 
     public bool canPlayRunAnimAgain = true;
-    public bool isRunning { get { return (playerMovement.isRunning); } }
+    public bool isRunning => characterControllerScript.GetisRunning;
     public float runTimer = 1;
 
     public Animation playerAnim;
@@ -19,7 +19,7 @@ public class PlayerAnimations : MonoBehaviour
     public CharacterController fpsController;
     public PlayerVitals playerVitals;
     //public HotBarSelector HotBarSelector;
-    public PlayerMovement playerMovement;
+    public CharacterControllerScript characterControllerScript;
     public MenuManager menuManager;
 
     public void Start()
@@ -27,7 +27,7 @@ public class PlayerAnimations : MonoBehaviour
         //fpsController = GameObject.Find("FPSPlayer").GetComponent<CharacterController>();
         //HotBarSelector = GameObject.Find("HotBarContent").GetComponent<HotBarSelector>();
         playerVitals = GetComponent<PlayerVitals>();
-        playerMovement = GetComponent<PlayerMovement>();
+        characterControllerScript = GetComponent<CharacterControllerScript>();
         //menuManager = GameObject.Find("UICanvas").GetComponent<MenuManager>();
     }
 

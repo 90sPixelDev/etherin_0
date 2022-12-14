@@ -1,11 +1,14 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class MenuManager : MonoBehaviour
+public class MenuManager : NetworkBehaviour
 {
     public GameObject inventoryUI;
+    public GameObject debugMenuUI;
+
     public GameObject cameraGO;
     //public Transform contentWindow;
     //public SelectionManager SelectionManager;
@@ -19,23 +22,26 @@ public class MenuManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        Cursor.lockState = CursorLockMode.Locked;
-
+        inventoryUI = GameObject.Find("PlayerInventoryUI");
+        debugMenuUI = GameObject.Find("DebugMenuUI");
+        cameraGO = GameObject.Find("PlayerVIewCam");
         inventoryUI.SetActive(false);
-        cameraGO = GameObject.Find("Camera");
+        debugMenuUI.SetActive(false);
         //SelectionManager = GameObject.Find("GameManager").GetComponent<SelectionManager>();
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetButtonDown("Cancel"))
-            MainMenu();
-        if (Input.GetButtonDown("Menu"))
+        if (IsOwner)
         {
-            Inventory();
+            //if (Input.GetButtonDown("Cancel"))
+            //    MainMenu();
+            //if (Input.GetButtonDown("Menu"))
+            //{
+            //    Inventory();
+            //}
         }
-
     }
 
     public void MainMenu()
@@ -43,8 +49,6 @@ public class MenuManager : MonoBehaviour
         if (!isPaused)
         {
             isPaused = true;
-            cameraGO.GetComponent<MouseLook>().enabled = false;
-            Time.timeScale = 0f;
             Cursor.lockState = CursorLockMode.None;
             mainMenuUI.SetActive(true);
             pointerUI.SetActive(false);
@@ -55,8 +59,6 @@ public class MenuManager : MonoBehaviour
         else
         {
             isPaused = false;
-            cameraGO.GetComponent<MouseLook>().enabled = true;
-            Time.timeScale = 1f;
             Cursor.lockState = CursorLockMode.Locked;
             mainMenuUI.SetActive(false);
             pointerUI.SetActive(true);
@@ -64,16 +66,9 @@ public class MenuManager : MonoBehaviour
         }
     }
 
-    public void PauseGame()
-    {
-        //INCORPORTATE A METHOD TO FREEZE GAME TIME AND SHOW CURSOR
-    }
-
     public void ResumeButton()
     {
         isPaused = false;
-        cameraGO.GetComponent<MouseLook>().enabled = true;
-        Time.timeScale = 1f;
         Cursor.lockState = CursorLockMode.Locked;
         mainMenuUI.SetActive(false);
         pointerUI.SetActive(true);
@@ -97,7 +92,6 @@ public class MenuManager : MonoBehaviour
             inMenu = true;
             inventoryUI.SetActive(true);
             pointerUI.SetActive(false);
-            cameraGO.GetComponent<MouseLook>().enabled = false;
             Cursor.lockState = CursorLockMode.None;
             Cursor.visible = true;
         }
@@ -106,7 +100,6 @@ public class MenuManager : MonoBehaviour
             inMenu = false;
             inventoryUI.SetActive(false);
             pointerUI.SetActive(true);
-            cameraGO.GetComponent<MouseLook>().enabled = true;
             Cursor.lockState = CursorLockMode.Locked;
             Cursor.visible = false;
         }

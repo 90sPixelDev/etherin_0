@@ -32,47 +32,47 @@ public class PlayerVitals : MonoBehaviour
     public float barNumberAdjustment = 3.28f;
     public float needsBarNumberAdjustment = 0.83f;
 
-    public PlayerMovement playerMovementScript;
+    public CharacterControllerScript characterControllerScript;
 
 
     // Start is called before the first frame update
     void Start()
     {
         //Finding the healthBarUI
-        healthBar = GameObject.Find("CurrentHealthBar").GetComponent<Image>();
-        staminaBar = GameObject.Find("CurrentStaminaBar").GetComponent<Image>();
-        healthPercentText = GameObject.Find("HealthPercentText").GetComponent<TextMeshProUGUI>();
-        staminaPercentText = GameObject.Find("StaminaPercentText").GetComponent<TextMeshProUGUI>();
+        //healthBar = GameObject.Find("CurrentHealthBar").GetComponent<Image>();
+        //staminaBar = GameObject.Find("CurrentStaminaBar").GetComponent<Image>();
+        //healthPercentText = GameObject.Find("HealthPercentText").GetComponent<TextMeshProUGUI>();
+        //staminaPercentText = GameObject.Find("StaminaPercentText").GetComponent<TextMeshProUGUI>();
 
-        playerMovementScript = GetComponent<PlayerMovement>();
+        //playerMovementScript = GetComponent<PlayerMovement>();
 
-        float healthPercent = 1f;
-        float staminaPercent = 1f;
+        //float healthPercent = 1f;
+        //float staminaPercent = 1f;
 
-        //Setting max health
-        maxHealth = 100f;
-        //Setting current health to max health in case of errors
-        currentHealth = maxHealth;
-        //Setting the health percent text to the current health of player at start
-        healthPercentText.text = healthPercent.ToString("P");
-        //Setting max Stamina
-        maxStamina = 100f;
-        //Setting current Stamina to max Stamina in case of errors
-        currentStamina = maxStamina;
-        //Setting the stamina percent text to the current stamina of player at start
-        staminaPercentText.text = staminaPercent.ToString("P");
-        //Convert the actual health to bar width
-        float barWidth = currentHealth * barNumberAdjustment;
-        //Setting the size of the healthbar so no issues from start
-        healthBar.rectTransform.sizeDelta = new Vector2(barWidth, healthBar.rectTransform.sizeDelta.y);
-        //Setting the color of the health bar correctly from start
-        Color fullHealthColor = new Color(0.502f, 0f, 0.0112f, 1f);
-        healthBar.color = fullHealthColor;
+        ////Setting max health
+        //maxHealth = 100f;
+        ////Setting current health to max health in case of errors
+        //currentHealth = maxHealth;
+        ////Setting the health percent text to the current health of player at start
+        //healthPercentText.text = healthPercent.ToString("P");
+        ////Setting max Stamina
+        //maxStamina = 100f;
+        ////Setting current Stamina to max Stamina in case of errors
+        //currentStamina = maxStamina;
+        ////Setting the stamina percent text to the current stamina of player at start
+        //staminaPercentText.text = staminaPercent.ToString("P");
+        ////Convert the actual health to bar width
+        //float barWidth = currentHealth * barNumberAdjustment;
+        ////Setting the size of the healthbar so no issues from start
+        //healthBar.rectTransform.sizeDelta = new Vector2(barWidth, healthBar.rectTransform.sizeDelta.y);
+        ////Setting the color of the health bar correctly from start
+        //Color fullHealthColor = new Color(0.502f, 0f, 0.0112f, 1f);
+        //healthBar.color = fullHealthColor;
 
-        //setting max Food
-        currentFood = 100f;
-        float needsBarAdj = currentFood * needsBarNumberAdjustment;
-        foodBar.rectTransform.sizeDelta = new Vector2(foodBar.rectTransform.sizeDelta.x, needsBarAdj);
+        ////setting max Food
+        //currentFood = 100f;
+        //float needsBarAdj = currentFood * needsBarNumberAdjustment;
+        //foodBar.rectTransform.sizeDelta = new Vector2(foodBar.rectTransform.sizeDelta.x, needsBarAdj);
 
     }
 
@@ -120,7 +120,7 @@ public class PlayerVitals : MonoBehaviour
             currentFood -= .03f * Time.deltaTime;
 
             //Making sure that when player runs their food/water also goes down quicker
-            if (playerMovementScript.isRunning)
+            if (characterControllerScript.GetisRunning)
                 currentFood -= 0.05f * Time.deltaTime;
         }
         if (currentFood < 0f)
@@ -140,7 +140,7 @@ public class PlayerVitals : MonoBehaviour
             currentWater -= 0.05f * Time.deltaTime;
 
             //Making sure that when player runs their food/water also goes down quicker
-            if (playerMovementScript.isRunning)
+            if (characterControllerScript.GetisRunning)
                 currentWater -= 0.075f * Time.deltaTime;
         }
 
@@ -160,22 +160,22 @@ public class PlayerVitals : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        RefreshStamina();
-        RefreshFood();
-        RefreshWater();
+        //RefreshStamina();
+        //RefreshFood();
+        //RefreshWater();
 
-        if (Input.GetKeyDown(KeyCode.UpArrow))
-            RefreshHealth(5f);
-        if (Input.GetKeyDown(KeyCode.DownArrow))
-            RefreshHealth(-5f);
+        //if (Input.GetKeyDown(KeyCode.UpArrow))
+        //    RefreshHealth(5f);
+        //if (Input.GetKeyDown(KeyCode.DownArrow))
+        //    RefreshHealth(-5f);
 
-        //Setting up the variable float for something between 0 and 1 to change colors depending on current health the player has
-        float healthPercent = currentHealth / maxHealth;
+        ////Setting up the variable float for something between 0 and 1 to change colors depending on current health the player has
+        //float healthPercent = currentHealth / maxHealth;
 
-        //Setting up the colors
-        Color fullHealthColor = new Color(0.502f, 0f, 0.0112f, 1f);
-        Color lowHealthColor = new Color(0.7452f, 0.4042f, 0.4122f, 1f);
-        //The actual code to lerp the colors from one to the other depending on the percent
-        healthBar.color = Color.Lerp(lowHealthColor, fullHealthColor, healthPercent);
+        ////Setting up the colors
+        //Color fullHealthColor = new Color(0.502f, 0f, 0.0112f, 1f);
+        //Color lowHealthColor = new Color(0.7452f, 0.4042f, 0.4122f, 1f);
+        ////The actual code to lerp the colors from one to the other depending on the percent
+        //healthBar.color = Color.Lerp(lowHealthColor, fullHealthColor, healthPercent);
     }
 }

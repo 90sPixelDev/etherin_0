@@ -15,21 +15,21 @@ public class ScreenEffects : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        PlayerVitals = GameObject.Find("FPSPlayer").GetComponent<PlayerVitals>();
-        hurtBG = GameObject.Find("HurtEffect").GetComponent<Image>();
-        hurtBG.enabled = false;
+        //PlayerVitals = GameObject.Find("FPSPlayer").GetComponent<PlayerVitals>();
+        //hurtBG = GameObject.Find("HurtEffect").GetComponent<Image>();
+        //hurtBG.enabled = false;
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (PlayerVitals.currentHealth <= 50)
-        {
-            hurtBG.enabled = true;
-            float alphaValue = (PlayerVitals.currentHealth * 2.5f) / 100f;
-            hurtBG.color = Color.Lerp(noAlpha, fullAlpha, alphaValue);
-        }
-        else if (PlayerVitals.currentHealth > 50)
-            hurtBG.enabled = false;
+        //if (PlayerVitals.currentHealth <= 50)
+        //{
+        //    hurtBG.enabled = true;
+        //    float alphaValue = (PlayerVitals.currentHealth * 2.5f) / 100f;
+        //    hurtBG.color = Color.Lerp(noAlpha, fullAlpha, alphaValue);
+        //}
+        //else if (PlayerVitals.currentHealth > 50)
+        //    hurtBG.enabled = false;
     }
 }

@@ -4,28 +4,21 @@ using UnityEngine;
 
 public class MenuButtons : MonoBehaviour
 {
-    public MenuManager MenuManager;
+    public MenuManager menuManager;
 
     // Start is called before the first frame update
     void Start()
     {
-        MenuManager = GameObject.Find("UICanvas").GetComponent<MenuManager>();
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-
+        menuManager = GameObject.Find("UICanvas").GetComponent<MenuManager>();
     }
 
     public void ResumeButton()
     {
-        MenuManager.isPaused = false;
-        MenuManager.cameraGO.GetComponent<MouseLook>().enabled = true;
-        UnityEngine.Time.timeScale = 1f;
+        menuManager.isPaused = false;
+        Time.timeScale = 1f;
         Cursor.lockState = CursorLockMode.Locked;
-        MenuManager.mainMenuUI.SetActive(false);
-        MenuManager.pointerUI.SetActive(true);
+        menuManager.mainMenuUI.SetActive(false);
+        menuManager.pointerUI.SetActive(true);
     }
     public void OptionsButton()
     {

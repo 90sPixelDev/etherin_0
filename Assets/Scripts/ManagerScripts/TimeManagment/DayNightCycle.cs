@@ -2,12 +2,13 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+[ExecuteInEditMode]
 public class DayNightCycle : MonoBehaviour
 {
     [Header("Time")]
     [Tooltip("Day Length in Minutes")]
     [SerializeField]
-    private float _targetDayLength = 10f; // Length of day in minutes
+    private float _targetDayLength = .5f; // Length of day in minutes
     public float targetDayLength
     {
         get
@@ -17,7 +18,7 @@ public class DayNightCycle : MonoBehaviour
     }
 
     [SerializeField]
-    [Range(0f, 1f)]
+    [Range(0f, 24f)]
     private float _timeOfDay;
     public float timeOfDay
     {
@@ -61,15 +62,20 @@ public class DayNightCycle : MonoBehaviour
 
     [Header("Sun Light")]
     [SerializeField]
-    private Transform dailyRotation;
+    private Transform sunRotation;
+    private Transform moonRotation;
     private Light sun;
-    private float intensity;
+    [SerializeField] private float intensity;
     [SerializeField]
     private float SunBaseIntensity = 1f;
     [SerializeField]
     private float sunVariation = 1.5f;
     [SerializeField]
     private Gradient sunColor;
+    [SerializeField]
+    private Gradient directionalColor;
+    [SerializeField]
+    private Gradient fogColor;
 
     [Header("Seasonal Variables")]
     [SerializeField]
@@ -84,7 +90,8 @@ public class DayNightCycle : MonoBehaviour
     private void Start()
     {
         sunSeasonalRotation = GameObject.Find("Seasonal Rotation").GetComponent<Transform>();
-        dailyRotation = GameObject.Find("Daily Rotation").GetComponent<Transform>();
+        sunRotation = GameObject.Find("Sun Rotation").GetComponent<Transform>();
+        moonRotation = GameObject.Find("Moon Rotation").GetComponent<Transform>();
         sun = GameObject.Find("Sun").GetComponent<Light>();
     }
 
@@ -96,23 +103,27 @@ public class DayNightCycle : MonoBehaviour
             UpdateTime();
         }
 
-        AdjustSunRotation();
-        AdjustSunColor();
+        AdjustSunRotation(timeOfDay / 24f);
+        AdjustSunColor(timeOfDay / 24f);
+        AdjustAmbientColor(timeOfDay / 24f);
+        AdjustFogColor(timeOfDay / 24f);
         SunIntensity();
+
+        AdjustMoonRotation(timeOfDay / 24f);
     }
 
     private void UpdateTimeScale()
     {
-        _timeScale = 24 / (_targetDayLength / 60);
+        _timeScale = 24f / (_targetDayLength / 60f);
     }
 
     private void UpdateTime()
     {
-        _timeOfDay += Time.deltaTime * _timeScale / 86400; //Seconds in a day
-        if (_timeOfDay > 1) //Day completed!
+        _timeOfDay += Time.deltaTime * _timeScale / 3600; //Seconds in an hour
+        if (_timeOfDay > 24) //Day completed!
         {
             _dayNumber++;
-            _timeOfDay -= 1;
+            _timeOfDay -= 24;
 
             if (_dayNumber > _yearLength) //Year has been completed!
             {
@@ -123,13 +134,19 @@ public class DayNightCycle : MonoBehaviour
     }
 
     //Rotates the sun daily (and seasonally soon too)
-    private void AdjustSunRotation()
+    private void AdjustSunRotation(float timePercent)
     {
-        float sunAngle = timeOfDay * 360f;
-        dailyRotation.transform.localRotation = Quaternion.Euler(new Vector3(0f, 0f, sunAngle));
+        float sunAngle = timePercent * 360f;
+        sunRotation.transform.localRotation = Quaternion.Euler(new Vector3(0f, 0f, sunAngle));
 
         float seasonalAngle = -maxSeasonalTilt * Mathf.Cos((float) dayNumber / (float) _yearLength * 2f * Mathf.PI);
         sunSeasonalRotation.localRotation = Quaternion.Euler(new Vector3(seasonalAngle, 0f, 0f));
+    }
+    private void AdjustMoonRotation(float timePercent)
+    {
+        float moonAngle = (timePercent + 180f) * 360f;
+
+        moonRotation.transform.localRotation = Quaternion.Euler(new Vector3(0f, 0f, moonAngle));
     }
 
     private void SunIntensity()
@@ -140,8 +157,17 @@ public class DayNightCycle : MonoBehaviour
         sun.intensity = intensity * sunVariation + SunBaseIntensity;
     }
 
-    private void AdjustSunColor()
+    private void AdjustSunColor(float timePercent)
     {
-        sun.color = sunColor.Evaluate(intensity);
+        sun.color = directionalColor.Evaluate(timePercent);
+    }
+
+    private void AdjustAmbientColor(float timePercent)
+    {
+        RenderSettings.ambientLight = sunColor.Evaluate(timePercent);
+    }
+    private void AdjustFogColor(float timePercent)
+    {
+        RenderSettings.fogColor = fogColor.Evaluate(timePercent);
     }
 }
