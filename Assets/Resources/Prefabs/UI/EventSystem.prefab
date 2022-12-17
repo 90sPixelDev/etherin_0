@@ -7902,10 +7902,9 @@ GameObject:
   - component: {fileID: 8430603929495377238}
   - component: {fileID: 8430603929495377239}
   - component: {fileID: 8430603929495377232}
-  - component: {fileID: 8430603929495377233}
   m_Layer: 5
   m_Name: UICanvas
-  m_TagString: Untagged
+  m_TagString: MainUI
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -7958,7 +7957,7 @@ Canvas:
   m_OverrideSorting: 0
   m_OverridePixelPerfect: 0
   m_SortingBucketNormalizedSize: 0
-  m_AdditionalShaderChannelsFlag: 31
+  m_AdditionalShaderChannelsFlag: 7
   m_SortingLayerID: 0
   m_SortingOrder: 0
   m_TargetDisplay: 0
@@ -8021,22 +8020,6 @@ MonoBehaviour:
   pointerUI: {fileID: 8430603928465229343}
   isPaused: 0
   inMenu: 0
---- !u!114 &8430603929495377233
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8430603928575456093}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 951099334
-  AlwaysReplicateAsRoot: 0
-  DontDestroyWithOwner: 0
-  AutoObjectParentSync: 1
 --- !u!1 &8430603928577084441
 GameObject:
   m_ObjectHideFlags: 0
@@ -14625,7 +14608,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 0}
   m_AnchorMax: {x: 1, y: 0}
-  m_AnchoredPosition: {x: 30.200134, y: 54.5}
+  m_AnchoredPosition: {x: 30.200195, y: 54.5}
   m_SizeDelta: {x: 350, y: 200}
   m_Pivot: {x: 1, y: 0}
 --- !u!222 &8430603928986804105
@@ -28784,7 +28767,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 8430603929773517642}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 8430603930032704924}
+        m_TargetAssemblyTypeName: MenuButtons, Assembly-CSharp
+        m_MethodName: QuitButton
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &8430603929810211127
 GameObject:
   m_ObjectHideFlags: 0
@@ -32799,7 +32794,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &8430603930032704925
 RectTransform:
   m_ObjectHideFlags: 0

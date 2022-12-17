@@ -82,6 +82,15 @@ namespace PlayerControls
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Inventory"",
+                    ""type"": ""Button"",
+                    ""id"": ""bf994a9d-b5bf-4a45-9a0e-81beeeed2404"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -291,6 +300,17 @@ namespace PlayerControls
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""Run"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""13ceb975-9cd1-4370-a72d-a4a8877c94ce"",
+                    ""path"": ""<Keyboard>/tab"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Inventory"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -884,6 +904,7 @@ namespace PlayerControls
             m_Player_Fire = m_Player.FindAction("Fire", throwIfNotFound: true);
             m_Player_Pause = m_Player.FindAction("Pause", throwIfNotFound: true);
             m_Player_Run = m_Player.FindAction("Run", throwIfNotFound: true);
+            m_Player_Inventory = m_Player.FindAction("Inventory", throwIfNotFound: true);
             // UI
             m_UI = asset.FindActionMap("UI", throwIfNotFound: true);
             m_UI_Navigate = m_UI.FindAction("Navigate", throwIfNotFound: true);
@@ -961,6 +982,7 @@ namespace PlayerControls
         private readonly InputAction m_Player_Fire;
         private readonly InputAction m_Player_Pause;
         private readonly InputAction m_Player_Run;
+        private readonly InputAction m_Player_Inventory;
         public struct PlayerActions
         {
             private @Player_Controls_Input m_Wrapper;
@@ -971,6 +993,7 @@ namespace PlayerControls
             public InputAction @Fire => m_Wrapper.m_Player_Fire;
             public InputAction @Pause => m_Wrapper.m_Player_Pause;
             public InputAction @Run => m_Wrapper.m_Player_Run;
+            public InputAction @Inventory => m_Wrapper.m_Player_Inventory;
             public InputActionMap Get() { return m_Wrapper.m_Player; }
             public void Enable() { Get().Enable(); }
             public void Disable() { Get().Disable(); }
@@ -998,6 +1021,9 @@ namespace PlayerControls
                     @Run.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnRun;
                     @Run.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnRun;
                     @Run.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnRun;
+                    @Inventory.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnInventory;
+                    @Inventory.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnInventory;
+                    @Inventory.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnInventory;
                 }
                 m_Wrapper.m_PlayerActionsCallbackInterface = instance;
                 if (instance != null)
@@ -1020,6 +1046,9 @@ namespace PlayerControls
                     @Run.started += instance.OnRun;
                     @Run.performed += instance.OnRun;
                     @Run.canceled += instance.OnRun;
+                    @Inventory.started += instance.OnInventory;
+                    @Inventory.performed += instance.OnInventory;
+                    @Inventory.canceled += instance.OnInventory;
                 }
             }
         }
@@ -1182,6 +1211,7 @@ namespace PlayerControls
             void OnFire(InputAction.CallbackContext context);
             void OnPause(InputAction.CallbackContext context);
             void OnRun(InputAction.CallbackContext context);
+            void OnInventory(InputAction.CallbackContext context);
         }
         public interface IUIActions
         {

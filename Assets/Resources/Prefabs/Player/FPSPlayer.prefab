@@ -146,7 +146,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6147783808162911541}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 1, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -293,13 +293,41 @@ MonoBehaviour:
     m_ActionId: ddc97a7a-d666-4b48-8afc-6bdac3a4edb4
     m_ActionName: UI/TrackedDeviceOrientation
   - m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 6147783808162911544}
+        m_TargetAssemblyTypeName: CharacterControllerScript, Assembly-CSharp
+        m_MethodName: OnMenu
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
     m_ActionId: cb718b0b-ddb0-49af-b416-f9553a45d8d4
     m_ActionName: Player/Pause[/Keyboard/escape]
   - m_PersistentCalls:
       m_Calls: []
     m_ActionId: 46a12602-04c2-4525-9c8a-4ee2f7c69683
     m_ActionName: Player/Run[/Keyboard/leftShift]
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 6147783808162911544}
+        m_TargetAssemblyTypeName: CharacterControllerScript, Assembly-CSharp
+        m_MethodName: OnInventoryUI
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: bf994a9d-b5bf-4a45-9a0e-81beeeed2404
+    m_ActionName: Player/Inventory[/Keyboard/tab]
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: Keyboard&Mouse
   m_DefaultActionMap: Player
@@ -317,10 +345,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 775fa00f5b5d66446b87731c9b42602c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  charaController: {fileID: 6147783808162911546}
+  charaController: {fileID: 0}
   fpsCam: {fileID: 6147783809232674475}
-  playerInput: {fileID: 1646841618837689450}
-  PlayerVitals: {fileID: 1941954439}
+  playerInput: {fileID: 0}
+  playerVitals: {fileID: 0}
   currentSpeed: 12
   walkSpeed: 12
   runSpeed: 18
@@ -334,8 +362,10 @@ MonoBehaviour:
   _isRunning: 0
   isOnSlope: 0
   jumpheight: 1
-  isMobile: 1
-  menuManager: {fileID: 0}
+  _IsMobile: 1
+  playerHUD: {fileID: 0}
+  playerInventoryUI: {fileID: 0}
+  testObject: {fileID: 0}
 --- !u!114 &1941954439
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -444,7 +474,7 @@ GameObject:
   - component: {fileID: 6147783809232674472}
   - component: {fileID: 8191291808700409870}
   m_Layer: 0
-  m_Name: PlayerVIewCam
+  m_Name: PlayerViewCam
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

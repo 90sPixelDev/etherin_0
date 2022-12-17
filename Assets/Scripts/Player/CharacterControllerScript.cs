@@ -5,10 +5,10 @@ using UnityEngine.InputSystem;
 public class CharacterControllerScript : NetworkBehaviour
 {
     [SerializeField] private CharacterController charaController;
-    [SerializeField] private DefaultInputActions defaultInputActions;
+    //[SerializeField] private DefaultInputActions defaultInputActions;
     [SerializeField] private Transform fpsCam;
     [SerializeField] private PlayerInput playerInput;
-    [SerializeField] private PlayerVitals PlayerVitals;
+    [SerializeField] private PlayerVitals playerVitals;
     float xRotation, yRotation;
 
     [Header("Player Movement Speeds")]
@@ -30,32 +30,43 @@ public class CharacterControllerScript : NetworkBehaviour
     [SerializeField] public float jumpheight = 1f;
     [Header("Conditions")]
     [SerializeField] private bool _IsMobile = true;
-    public bool IsMobile { get => _IsMobile; set => _IsMobile = !_IsMobile; }
+    public bool IsMobile { get => _IsMobile; set => _IsMobile = value; }
 
     [Header("References Extra")]
-    [SerializeField] MenuManager menuManager;
+    [SerializeField] MenuManager playerHUD;
+    [SerializeField] GameObject playerInventoryUI;
     private Vector2 moveInput;
     private Vector2 lookPos;
+
+    [Header("DEBUG")]
+    [SerializeField] GameObject testObject;
 
 
     private void Awake()
     {
         charaController = GetComponent<CharacterController>();
+        playerInput = GetComponent<PlayerInput>();
+        playerVitals = GetComponent<PlayerVitals>();
     }
-    public void Start()
+    public void SetReferences()
     {
-        PlayerVitals = GetComponent<PlayerVitals>();
-        //menuManager = GameObject.Find("UICanvas").GetComponent<MenuManager>();
-
+        if (IsOwner)
+        {
+            playerHUD = GameObject.FindGameObjectWithTag("MainUI").GetComponent<MenuManager>();
+            playerInventoryUI = GameObject.FindGameObjectWithTag("InventoryUI");
+        }
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (IsOwner && IsMobile)
+        if (IsOwner)
         {
+            if (IsMobile)
+            {
             PlayerMove();
             PlayerLook();
+            }
 
             velocity.y += gravity * Time.deltaTime;
             if (isGrounded && velocity.y < 0)
@@ -126,9 +137,22 @@ public class CharacterControllerScript : NetworkBehaviour
     {
         currentSpeed *= 1.35f;
     }
+
+    public void OnMenu()
+    {
+        if (IsOwner)
+        {
+        var movementAbility = IsMobile ? IsMobile = false : IsMobile = true;
+        playerHUD.MainMenu(movementAbility);
+        }
+    }
     
-    //public void OnMenu(InputAction.CallbackContext ctx)
-    //{
-    //    menuManager.MainMenu();
-    //}
+    public void OnInventoryUI()
+    {
+        if (IsOwner)
+        {
+        var movementAbility = IsMobile ? IsMobile = false : IsMobile = true;
+        playerHUD.Inventory(movementAbility);
+        }
+    }
 }

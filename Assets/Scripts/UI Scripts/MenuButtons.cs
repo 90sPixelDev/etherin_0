@@ -1,8 +1,9 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using Unity.Netcode;
 using UnityEngine;
 
-public class MenuButtons : MonoBehaviour
+public class MenuButtons : NetworkBehaviour
 {
     public MenuManager menuManager;
 
@@ -15,9 +16,8 @@ public class MenuButtons : MonoBehaviour
     public void ResumeButton()
     {
         menuManager.isPaused = false;
-        Time.timeScale = 1f;
         Cursor.lockState = CursorLockMode.Locked;
-        menuManager.mainMenuUI.SetActive(false);
+        menuManager.playerHUD.SetActive(false);
         menuManager.pointerUI.SetActive(true);
     }
     public void OptionsButton()
@@ -26,6 +26,7 @@ public class MenuButtons : MonoBehaviour
     }
     public void QuitButton()
     {
+        NetworkManager.Shutdown();
         Application.Quit();
     }
 }

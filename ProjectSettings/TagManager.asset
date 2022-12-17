@@ -6,6 +6,8 @@ TagManager:
   tags:
   - UIItemSlot
   - Ground
+  - MainUI
+  - InventoryUI
   layers:
   - Default
   - TransparentFX
