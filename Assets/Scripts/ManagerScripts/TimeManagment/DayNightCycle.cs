@@ -84,7 +84,7 @@ public class DayNightCycle : MonoBehaviour
     [Range(-45f, 45f)]
     private float maxSeasonalTilt;
 
-    public bool isNight { get { return (timeOfDay > 0.8f || timeOfDay < 0.2); } }
+    public bool isNight { get { return (timeOfDay < 8f || timeOfDay > 20); } }
 
 
     private void Start()

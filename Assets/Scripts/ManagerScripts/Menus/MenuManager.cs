@@ -25,10 +25,10 @@ public class MenuManager : NetworkBehaviour
     void Start()
     {
         playerHUD = GameObject.FindGameObjectWithTag("MainUI");
-        playerNGO = GameObject.FindGameObjectWithTag("Player").GetComponent<NetworkObject>();
+        //playerNGO = GameObject.FindGameObjectWithTag("Player").GetComponent<NetworkObject>();
         mainMenuUI = playerHUD.GetComponentInChildren<MenuButtons>().gameObject;
         debugMenuUI = GameObject.Find("DebugMenuUI");
-        cameraGO = GameObject.Find("PlayerViewCam");
+        //cameraGO = GameObject.Find("PlayerViewCam");
         inventoryUI.SetActive(false);
         debugMenuUI.SetActive(false);
         mainMenuUI.SetActive(false);

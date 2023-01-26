@@ -47,47 +47,45 @@ public class CharacterControllerScript : NetworkBehaviour
         charaController = GetComponent<CharacterController>();
         playerInput = GetComponent<PlayerInput>();
         playerVitals = GetComponent<PlayerVitals>();
+        SetReferences();
     }
-    public void SetReferences()
+    private void SetReferences()
     {
-        if (IsOwner)
-        {
-            playerHUD = GameObject.FindGameObjectWithTag("MainUI").GetComponent<MenuManager>();
-            playerInventoryUI = GameObject.FindGameObjectWithTag("InventoryUI");
-        }
+        if (!IsOwner) return;
+
+        playerHUD = GameObject.FindGameObjectWithTag("MainUI").GetComponent<MenuManager>();
+        playerInventoryUI = GameObject.FindGameObjectWithTag("InventoryUI");
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (IsOwner)
+
+        if (IsMobile)
         {
-            if (IsMobile)
-            {
-            PlayerMove();
-            PlayerLook();
-            }
-
-            velocity.y += gravity * Time.deltaTime;
-            if (isGrounded && velocity.y < 0)
-            {
-                velocity.y = -1f;
-            }
-            charaController.Move(velocity * Time.deltaTime);
-
-            //To configure to run when holding "run"
-            //if (Input.GetButton("Run") && PlayerVitals.currentStamina > 1f)
-            //{
-            //    isRunning = true;
-            //    currentSpeed = runSpeed;
-            //}
-            //else
-            //{
-            //    isRunning = false;
-            //    currentSpeed = walkSpeed;
-            //}
-            //}
+        PlayerMove();
+        PlayerLook();
         }
+
+        velocity.y += gravity * Time.deltaTime;
+        if (isGrounded && velocity.y < 0)
+        {
+            velocity.y = -1f;
+        }
+        charaController.Move(velocity * Time.deltaTime);
+
+        //To configure to run when holding "run"
+        //if (Input.GetButton("Run") && PlayerVitals.currentStamina > 1f)
+        //{
+        //    isRunning = true;
+        //    currentSpeed = runSpeed;
+        //}
+        //else
+        //{
+        //    isRunning = false;
+        //    currentSpeed = walkSpeed;
+        //}
+        //}
     }
 
     public void OnMove(InputAction.CallbackContext ctx)
