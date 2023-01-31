@@ -25,45 +25,40 @@ public class MenuManager : NetworkBehaviour
     void Start()
     {
         playerHUD = GameObject.FindGameObjectWithTag("MainUI");
-        //playerNGO = GameObject.FindGameObjectWithTag("Player").GetComponent<NetworkObject>();
         mainMenuUI = playerHUD.GetComponentInChildren<MenuButtons>().gameObject;
         debugMenuUI = GameObject.Find("DebugMenuUI");
-        //cameraGO = GameObject.Find("PlayerViewCam");
         inventoryUI.SetActive(false);
         debugMenuUI.SetActive(false);
         mainMenuUI.SetActive(false);
-
-        //SelectionManager = GameObject.Find("GameManager").GetComponent<SelectionManager>();
     }
 
     public void MainMenu(bool canMove)
     {
-        if (!isPaused && !canMove)
-        {
-            isPaused = true;
-            Cursor.lockState = CursorLockMode.None;
-            pointerUI.SetActive(false);
-            mainMenuUI.SetActive(true);
-            inMenu = false;
-            Cursor.visible = true;
-        }
-        else
-        {
-            isPaused = false;
-            Cursor.lockState = CursorLockMode.Locked;
-            pointerUI.SetActive(true);
-            mainMenuUI.SetActive(false);
-            Cursor.visible = false;
-        }
+        if (IsOwner) {
+            if (!isPaused && !canMove)
+            {
+                isPaused = true;
+                Cursor.lockState = CursorLockMode.None;
+                pointerUI.SetActive(false);
+                mainMenuUI.SetActive(true);
+                inMenu = false;
+                Cursor.visible = true;
+            }
+            else
+            {
+                isPaused = false;
+                Cursor.lockState = CursorLockMode.Locked;
+                pointerUI.SetActive(true);
+                mainMenuUI.SetActive(false);
+                inMenu = false;
+                Cursor.visible = false;
+            }
+        };
     }
 
     public void ResumeButton()
     {
-        isPaused = false;
-        Cursor.lockState = CursorLockMode.Locked;
-        playerHUD.SetActive(false);
-        pointerUI.SetActive(true);
-        Cursor.visible = false;
+        MainMenu(true);
     }
     public void OptionsButton()
     {
@@ -71,28 +66,31 @@ public class MenuManager : NetworkBehaviour
     }
     public void QuitButton()
     {
+        if (!IsOwner) return;
         Application.Quit();
     }
 
     public void Inventory(bool canMove)
     {
-        if (isPaused)
-            return;
-        if (!inMenu && !canMove)
+        if (IsOwner)
         {
-            inMenu = true;
-            inventoryUI.SetActive(true);
-            pointerUI.SetActive(false);
-            Cursor.lockState = CursorLockMode.None;
-            Cursor.visible = true;
-        }
-        else if (inMenu)
-        {
-            inMenu = false;
-            inventoryUI.SetActive(false);
-            pointerUI.SetActive(true);
-            Cursor.lockState = CursorLockMode.Locked;
-            Cursor.visible = false;
+            if (isPaused) return;
+            if (!inMenu && !canMove)
+            {
+                inMenu = true;
+                inventoryUI.SetActive(true);
+                pointerUI.SetActive(false);
+                Cursor.lockState = CursorLockMode.None;
+                Cursor.visible = true;
+            }
+            else if (inMenu)
+            {
+                inMenu = false;
+                inventoryUI.SetActive(false);
+                pointerUI.SetActive(true);
+                Cursor.lockState = CursorLockMode.Locked;
+                Cursor.visible = false;
+            }
         }
     }
 

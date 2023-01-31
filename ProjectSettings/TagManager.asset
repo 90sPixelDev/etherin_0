@@ -8,6 +8,8 @@ TagManager:
   - Ground
   - MainUI
   - InventoryUI
+  - FPCam
+  - PlayerUI
   layers:
   - Default
   - TransparentFX

@@ -8,15 +8,19 @@ public class MainMenuUI : MonoBehaviour
     [SerializeField] private NetworkManager networkManager;
     [SerializeField] private GameObject mainMenuUI;
 
-    private void HostSessionBtn()
+    public void HostSessionBtn()
     {
         networkManager.StartHost();
     }
-    private void JoinSessionBtn()
+    public void JoinSessionBtn()
     {
         networkManager.StartClient();
     }
-    private void QUitGameBtn()
+    public void StartServerBtn()
+    {
+        networkManager.StartServer();
+    }
+    public void QUitGameBtn()
     {
         Application.Quit();
     }

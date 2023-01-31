@@ -5,8 +5,8 @@ using UnityEngine.InputSystem;
 public class CharacterControllerScript : NetworkBehaviour
 {
     [SerializeField] private CharacterController charaController;
+    [SerializeField] private NetworkObject ngo;
     //[SerializeField] private DefaultInputActions defaultInputActions;
-    [SerializeField] private Transform fpsCam;
     [SerializeField] private PlayerInput playerInput;
     [SerializeField] private PlayerVitals playerVitals;
     float xRotation, yRotation;
@@ -33,66 +33,86 @@ public class CharacterControllerScript : NetworkBehaviour
     public bool IsMobile { get => _IsMobile; set => _IsMobile = value; }
 
     [Header("References Extra")]
-    [SerializeField] MenuManager playerHUD;
+    [SerializeField] public Transform fpsCam;
+    [SerializeField] public MenuManager playerHUD;
     [SerializeField] GameObject playerInventoryUI;
     private Vector2 moveInput;
     private Vector2 lookPos;
+    public bool refsLoaded = false;
 
     [Header("DEBUG")]
     [SerializeField] GameObject testObject;
+    [SerializeField] public string testString = "TESTER!";
 
 
     private void Awake()
     {
         charaController = GetComponent<CharacterController>();
+        ngo = GetComponent<NetworkObject>();
         playerInput = GetComponent<PlayerInput>();
         playerVitals = GetComponent<PlayerVitals>();
-        SetReferences();
     }
-    private void SetReferences()
-    {
-        if (!IsOwner) return;
 
+    [ClientRpc]
+    public void SetReferencesClientRPC()
+    {
+        //if (!IsOwner) return;
+        fpsCam = GameObject.FindGameObjectWithTag("FPCam").transform;
         playerHUD = GameObject.FindGameObjectWithTag("MainUI").GetComponent<MenuManager>();
         playerInventoryUI = GameObject.FindGameObjectWithTag("InventoryUI");
+        refsLoaded = true;
     }
 
     // Update is called once per frame
     void Update()
     {
-
-        if (IsMobile)
+        //return;
+        if (IsOwner && refsLoaded)
         {
-        PlayerMove();
-        PlayerLook();
-        }
 
-        velocity.y += gravity * Time.deltaTime;
-        if (isGrounded && velocity.y < 0)
-        {
-            velocity.y = -1f;
-        }
-        charaController.Move(velocity * Time.deltaTime);
+            if (IsMobile)
+            {
+                PlayerMove();
+                CameraFollowPlayer();
+                PlayerLook();
+            }
 
-        //To configure to run when holding "run"
-        //if (Input.GetButton("Run") && PlayerVitals.currentStamina > 1f)
-        //{
-        //    isRunning = true;
-        //    currentSpeed = runSpeed;
-        //}
-        //else
-        //{
-        //    isRunning = false;
-        //    currentSpeed = walkSpeed;
-        //}
-        //}
+            velocity.y += gravity * Time.deltaTime;
+            if (isGrounded && velocity.y < 0)
+            {
+                velocity.y = -1f;
+            }
+            charaController.Move(velocity * Time.deltaTime);
+
+            //To configure to run when holding "run"
+            //if (Input.GetButton("Run") && PlayerVitals.currentStamina > 1f)
+            //{
+            //    isRunning = true;
+            //    currentSpeed = runSpeed;
+            //}
+            //else
+            //{
+            //    isRunning = false;
+            //    currentSpeed = walkSpeed;
+            //}
+            //}
+        }
+    }
+
+    public void CameraFollowPlayer()
+    {
+        if (!(refsLoaded && IsOwner)) return;
+        fpsCam.position = transform.position + new Vector3(0, 3.5f, 0);
     }
 
     public void OnMove(InputAction.CallbackContext ctx)
     {
+        if (!IsOwner) return;
+
         var keyboard = Keyboard.current;
         if (keyboard == null) return;
 
+        Debug.Log("CHARACTER MOVING!");
         moveInput = ctx.ReadValue<Vector2>();
     }
 
@@ -106,6 +126,8 @@ public class CharacterControllerScript : NetworkBehaviour
 
     public void OnJump(InputAction.CallbackContext ctx)
     {
+        if (!IsOwner) return;
+
         var keyboard = Keyboard.current;
         if (keyboard == null) return;
 
@@ -117,11 +139,14 @@ public class CharacterControllerScript : NetworkBehaviour
 
     public void OnMouseLook(InputAction.CallbackContext ctx)
     {
+        if (!IsOwner) return;
+
         lookPos = ctx.ReadValue<Vector2>();
     }
 
     public void PlayerLook()
     {
+        if (!refsLoaded) return;
         Cursor.lockState = CursorLockMode.Locked;
 
         xRotation -= lookPos.y * Time.deltaTime * 30;
@@ -133,6 +158,8 @@ public class CharacterControllerScript : NetworkBehaviour
 
     public void OnSprint(InputAction.CallbackContext ctx)
     {
+        if (!IsOwner) return;
+
         currentSpeed *= 1.35f;
     }
 

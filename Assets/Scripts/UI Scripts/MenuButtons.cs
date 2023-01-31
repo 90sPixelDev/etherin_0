@@ -15,10 +15,7 @@ public class MenuButtons : NetworkBehaviour
 
     public void ResumeButton()
     {
-        menuManager.isPaused = false;
-        Cursor.lockState = CursorLockMode.Locked;
-        menuManager.playerHUD.SetActive(false);
-        menuManager.pointerUI.SetActive(true);
+        menuManager.ResumeButton();
     }
     public void OptionsButton()
     {
