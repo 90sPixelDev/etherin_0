@@ -347,6 +347,15 @@ MonoBehaviour:
   charaController: {fileID: 6147783808162911546}
   ngo: {fileID: 0}
   playerInput: {fileID: 1646841618837689450}
+  playerAction:
+    m_Name: Player
+    m_Type: 0
+    m_ExpectedControlType: 
+    m_Id: e049e7ec-97b2-481f-a990-50194e4e00bb
+    m_Processors: 
+    m_Interactions: 
+    m_SingletonActionBindings: []
+    m_Flags: 0
   playerVitals: {fileID: 0}
   currentSpeed: 12
   walkSpeed: 12

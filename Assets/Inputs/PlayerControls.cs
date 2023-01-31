@@ -199,7 +199,7 @@ namespace PlayerControls
                     ""path"": ""<Pointer>/delta"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": "";Keyboard&Mouse;Touch"",
+                    ""groups"": "";Keyboard&Mouse"",
                     ""action"": ""Look"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
@@ -243,7 +243,7 @@ namespace PlayerControls
                     ""path"": ""<Touchscreen>/primaryTouch/tap"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": "";Touch"",
+                    ""groups"": """",
                     ""action"": ""Fire"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
@@ -682,7 +682,7 @@ namespace PlayerControls
                     ""path"": ""*/{Submit}"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": ""Keyboard&Mouse;Gamepad;Touch;Joystick;XR"",
+                    ""groups"": ""Keyboard&Mouse;Gamepad;Joystick;XR"",
                     ""action"": ""Submit"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
@@ -693,7 +693,7 @@ namespace PlayerControls
                     ""path"": ""*/{Cancel}"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": ""Keyboard&Mouse;Gamepad;Touch;Joystick;XR"",
+                    ""groups"": ""Keyboard&Mouse;Gamepad;Joystick;XR"",
                     ""action"": ""Cancel"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
@@ -722,17 +722,6 @@ namespace PlayerControls
                 },
                 {
                     ""name"": """",
-                    ""id"": ""5693e57a-238a-46ed-b5ae-e64e6e574302"",
-                    ""path"": ""<Touchscreen>/touch*/position"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": ""Touch"",
-                    ""action"": ""Point"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
                     ""id"": ""4faf7dc9-b979-4210-aa8c-e808e1ef89f5"",
                     ""path"": ""<Mouse>/leftButton"",
                     ""interactions"": """",
@@ -749,17 +738,6 @@ namespace PlayerControls
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": "";Keyboard&Mouse"",
-                    ""action"": ""Click"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""47c2a644-3ebc-4dae-a106-589b7ca75b59"",
-                    ""path"": ""<Touchscreen>/touch*/press"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": ""Touch"",
                     ""action"": ""Click"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
@@ -856,17 +834,6 @@ namespace PlayerControls
             ""devices"": [
                 {
                     ""devicePath"": ""<Gamepad>"",
-                    ""isOptional"": false,
-                    ""isOR"": false
-                }
-            ]
-        },
-        {
-            ""name"": ""Touch"",
-            ""bindingGroup"": ""Touch"",
-            ""devices"": [
-                {
-                    ""devicePath"": ""<Touchscreen>"",
                     ""isOptional"": false,
                     ""isOR"": false
                 }
@@ -1174,15 +1141,6 @@ namespace PlayerControls
             {
                 if (m_GamepadSchemeIndex == -1) m_GamepadSchemeIndex = asset.FindControlSchemeIndex("Gamepad");
                 return asset.controlSchemes[m_GamepadSchemeIndex];
-            }
-        }
-        private int m_TouchSchemeIndex = -1;
-        public InputControlScheme TouchScheme
-        {
-            get
-            {
-                if (m_TouchSchemeIndex == -1) m_TouchSchemeIndex = asset.FindControlSchemeIndex("Touch");
-                return asset.controlSchemes[m_TouchSchemeIndex];
             }
         }
         private int m_JoystickSchemeIndex = -1;

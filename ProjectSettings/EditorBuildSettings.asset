@@ -9,11 +9,11 @@ EditorBuildSettings:
     path: Assets/Scenes/MainMenuScene.unity
     guid: a9beb2256df77404a8195fd919cec2f0
   - enabled: 1
-    path: Assets/Scenes/WorldLoaded.unity
-    guid: 99c9720ab356a0642a771bea13969a05
-  - enabled: 1
     path: Assets/Scenes/World.unity
     guid: 6f07473aaaf144247b527aeb9bad1c43
+  - enabled: 0
+    path: Assets/Scenes/WorldLoaded.unity
+    guid: 99c9720ab356a0642a771bea13969a05
   m_configObjects:
     com.unity.input.settings: {fileID: 11400000, guid: de48f3fc06486364aafb88a771f2ea8d,
       type: 2}

@@ -1,6 +1,7 @@
 ﻿using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.InputSystem.Users;
 
 public class CharacterControllerScript : NetworkBehaviour
 {
@@ -8,6 +9,7 @@ public class CharacterControllerScript : NetworkBehaviour
     [SerializeField] private NetworkObject ngo;
     //[SerializeField] private DefaultInputActions defaultInputActions;
     [SerializeField] private PlayerInput playerInput;
+    [SerializeField] private InputAction playerAction;
     [SerializeField] private PlayerVitals playerVitals;
     float xRotation, yRotation;
 
@@ -51,6 +53,20 @@ public class CharacterControllerScript : NetworkBehaviour
         ngo = GetComponent<NetworkObject>();
         playerInput = GetComponent<PlayerInput>();
         playerVitals = GetComponent<PlayerVitals>();
+
+
+    }
+
+    private void Start()
+    {
+        if (PlayerInput.all.Count <= 1) return;
+        var player2 = PlayerInput.all[1];
+
+        Debug.Log("Manually setting pairing!");
+        InputUser.PerformPairingWithDevice(Keyboard.current, user: player2.user);
+        InputUser.PerformPairingWithDevice(Mouse.current, user: player2.user);
+
+        player2.user.ActivateControlScheme("Keyboard&Mouse");
     }
 
     [ClientRpc]
