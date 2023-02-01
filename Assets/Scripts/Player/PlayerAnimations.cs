@@ -17,7 +17,7 @@ public class PlayerAnimations : MonoBehaviour
     public Animation playerAnim;
 
     public CharacterController fpsController;
-    public PlayerVitals playerVitals;
+    public PlayerNetworkVitals playerNetworkVitals;
     //public HotBarSelector HotBarSelector;
     public CharacterControllerScript characterControllerScript;
     public MenuManager menuManager;
@@ -26,7 +26,7 @@ public class PlayerAnimations : MonoBehaviour
     {
         //fpsController = GameObject.Find("FPSPlayer").GetComponent<CharacterController>();
         //HotBarSelector = GameObject.Find("HotBarContent").GetComponent<HotBarSelector>();
-        playerVitals = GetComponent<PlayerVitals>();
+        playerNetworkVitals = GetComponent<PlayerNetworkVitals>();
         characterControllerScript = GetComponent<CharacterControllerScript>();
         //menuManager = GameObject.Find("UICanvas").GetComponent<MenuManager>();
     }

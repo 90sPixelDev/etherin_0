@@ -91,6 +91,15 @@ namespace PlayerControls
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Debug"",
+                    ""type"": ""Button"",
+                    ""id"": ""2c5b2244-87fa-4089-ab32-06bd2f399348"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -311,6 +320,17 @@ namespace PlayerControls
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""Inventory"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""88383768-fe20-4bde-9e38-85228b031b1b"",
+                    ""path"": ""<Keyboard>/period"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Debug"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -872,6 +892,7 @@ namespace PlayerControls
             m_Player_Pause = m_Player.FindAction("Pause", throwIfNotFound: true);
             m_Player_Run = m_Player.FindAction("Run", throwIfNotFound: true);
             m_Player_Inventory = m_Player.FindAction("Inventory", throwIfNotFound: true);
+            m_Player_Debug = m_Player.FindAction("Debug", throwIfNotFound: true);
             // UI
             m_UI = asset.FindActionMap("UI", throwIfNotFound: true);
             m_UI_Navigate = m_UI.FindAction("Navigate", throwIfNotFound: true);
@@ -950,6 +971,7 @@ namespace PlayerControls
         private readonly InputAction m_Player_Pause;
         private readonly InputAction m_Player_Run;
         private readonly InputAction m_Player_Inventory;
+        private readonly InputAction m_Player_Debug;
         public struct PlayerActions
         {
             private @Player_Controls_Input m_Wrapper;
@@ -961,6 +983,7 @@ namespace PlayerControls
             public InputAction @Pause => m_Wrapper.m_Player_Pause;
             public InputAction @Run => m_Wrapper.m_Player_Run;
             public InputAction @Inventory => m_Wrapper.m_Player_Inventory;
+            public InputAction @Debug => m_Wrapper.m_Player_Debug;
             public InputActionMap Get() { return m_Wrapper.m_Player; }
             public void Enable() { Get().Enable(); }
             public void Disable() { Get().Disable(); }
@@ -991,6 +1014,9 @@ namespace PlayerControls
                     @Inventory.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnInventory;
                     @Inventory.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnInventory;
                     @Inventory.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnInventory;
+                    @Debug.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnDebug;
+                    @Debug.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnDebug;
+                    @Debug.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnDebug;
                 }
                 m_Wrapper.m_PlayerActionsCallbackInterface = instance;
                 if (instance != null)
@@ -1016,6 +1042,9 @@ namespace PlayerControls
                     @Inventory.started += instance.OnInventory;
                     @Inventory.performed += instance.OnInventory;
                     @Inventory.canceled += instance.OnInventory;
+                    @Debug.started += instance.OnDebug;
+                    @Debug.performed += instance.OnDebug;
+                    @Debug.canceled += instance.OnDebug;
                 }
             }
         }
@@ -1170,6 +1199,7 @@ namespace PlayerControls
             void OnPause(InputAction.CallbackContext context);
             void OnRun(InputAction.CallbackContext context);
             void OnInventory(InputAction.CallbackContext context);
+            void OnDebug(InputAction.CallbackContext context);
         }
         public interface IUIActions
         {

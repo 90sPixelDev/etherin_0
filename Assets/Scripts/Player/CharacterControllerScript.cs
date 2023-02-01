@@ -10,7 +10,8 @@ public class CharacterControllerScript : NetworkBehaviour
     //[SerializeField] private DefaultInputActions defaultInputActions;
     [SerializeField] private PlayerInput playerInput;
     [SerializeField] private InputAction playerAction;
-    [SerializeField] private PlayerVitals playerVitals;
+    [SerializeField] private PlayerNetworkVitals playerNetworkVitals;
+    [SerializeField] private PlayerNetworkState playerNetworkState;
     float xRotation, yRotation;
 
     [Header("Player Movement Speeds")]
@@ -22,25 +23,29 @@ public class CharacterControllerScript : NetworkBehaviour
     Vector3 velocity;
     [Header("On Ground Information")]
     [SerializeField] private float groundDistance = 0.07f;
+    [SerializeField] private bool isGrounded;
     [SerializeField] private Transform groundCheck;
     [SerializeField] private LayerMask groundMask;
-    [SerializeField] private bool isGrounded;
     [SerializeField] private bool _isRunning = false;
     public bool GetisRunning { get => _isRunning; set => _isRunning = value; }
     [SerializeField] private bool isOnSlope;
 
-    [SerializeField] public float jumpheight = 1f;
+    [SerializeField] public int jumpheight = 2;
     [Header("Conditions")]
     [SerializeField] private bool _IsMobile = true;
     public bool IsMobile { get => _IsMobile; set => _IsMobile = value; }
 
     [Header("References Extra")]
     [SerializeField] public Transform fpsCam;
-    [SerializeField] public MenuManager playerHUD;
-    [SerializeField] GameObject playerInventoryUI;
     private Vector2 moveInput;
     private Vector2 lookPos;
     public bool refsLoaded = false;
+
+    [Header("UI References")]
+    public GameObject mainMenuUI;
+    public GameObject playerInvMenuUI;
+    public GameObject debugMenuUI;
+    public GameObject pointerUI;
 
     [Header("DEBUG")]
     [SerializeField] GameObject testObject;
@@ -52,9 +57,8 @@ public class CharacterControllerScript : NetworkBehaviour
         charaController = GetComponent<CharacterController>();
         ngo = GetComponent<NetworkObject>();
         playerInput = GetComponent<PlayerInput>();
-        playerVitals = GetComponent<PlayerVitals>();
-
-
+        playerNetworkVitals = GetComponent<PlayerNetworkVitals>();
+        playerNetworkState = GetComponent<PlayerNetworkState>();
     }
 
     private void Start()
@@ -70,12 +74,17 @@ public class CharacterControllerScript : NetworkBehaviour
     }
 
     [ClientRpc]
-    public void SetReferencesClientRPC()
+    public void SetReferencesClientRPC(ClientRpcParams clientRpcParams)
     {
-        //if (!IsOwner) return;
+        if (refsLoaded) return;
+        Debug.Log("Running on clients who newly connected only!");
+
         fpsCam = GameObject.FindGameObjectWithTag("FPCam").transform;
-        playerHUD = GameObject.FindGameObjectWithTag("MainUI").GetComponent<MenuManager>();
-        playerInventoryUI = GameObject.FindGameObjectWithTag("InventoryUI");
+        mainMenuUI = GameObject.FindGameObjectWithTag("MainUI");
+        playerInvMenuUI = GameObject.FindGameObjectWithTag("PlayerInvUI");
+        pointerUI = GameObject.Find("PointerUI");
+        debugMenuUI = GameObject.Find("DebugMenuUI");
+
         refsLoaded = true;
     }
 
@@ -85,10 +94,14 @@ public class CharacterControllerScript : NetworkBehaviour
         //return;
         if (IsOwner && refsLoaded)
         {
+            mainMenuUI.SetActive(false);
+            playerInvMenuUI.SetActive(false);
+            debugMenuUI.SetActive(false);
 
             if (IsMobile)
             {
                 PlayerMove();
+                CheckIfOnGround();
                 CameraFollowPlayer();
                 PlayerLook();
             }
@@ -115,6 +128,13 @@ public class CharacterControllerScript : NetworkBehaviour
         }
     }
 
+    public void OnTestNetworkVarByKeyPress(InputAction.CallbackContext ctx)
+    {
+        if (!IsOwner) return;
+
+        playerNetworkVitals.EditHealth(-10f);
+    }
+
     public void CameraFollowPlayer()
     {
         if (!(refsLoaded && IsOwner)) return;
@@ -128,7 +148,6 @@ public class CharacterControllerScript : NetworkBehaviour
         var keyboard = Keyboard.current;
         if (keyboard == null) return;
 
-        Debug.Log("CHARACTER MOVING!");
         moveInput = ctx.ReadValue<Vector2>();
     }
 
@@ -140,6 +159,11 @@ public class CharacterControllerScript : NetworkBehaviour
         charaController.Move(transform.TransformDirection(moveDirection) * currentSpeed * Time.deltaTime);
     }
 
+    public void CheckIfOnGround()
+    {
+        isGrounded = Physics.CheckSphere(groundCheck.position, 0.1f, groundMask);
+    }
+
     public void OnJump(InputAction.CallbackContext ctx)
     {
         if (!IsOwner) return;
@@ -147,6 +171,7 @@ public class CharacterControllerScript : NetworkBehaviour
         var keyboard = Keyboard.current;
         if (keyboard == null) return;
 
+        Debug.Log("JUMP!");
         if (isGrounded)
         {
             velocity.y = Mathf.Sqrt(jumpheight * -2 * gravity);
@@ -179,21 +204,38 @@ public class CharacterControllerScript : NetworkBehaviour
         currentSpeed *= 1.35f;
     }
 
-    public void OnMenu()
-    {
-        if (IsOwner)
-        {
-        var movementAbility = IsMobile ? IsMobile = false : IsMobile = true;
-        playerHUD.MainMenu(movementAbility);
-        }
-    }
+    //public void OnMenu()
+    //{
+    //    if (IsOwner)
+    //    {
+    //        var movementAbility = IsMobile ? IsMobile = false : IsMobile = true;
+    //        menus.MainMenu();
+    //    }
+    //}
     
     public void OnInventoryUI()
     {
-        if (IsOwner)
+        if (!IsOwner) return;
+        Debug.Log("INVENTORY!");
+
+        //var movementAbility = IsMobile ? IsMobile = false : IsMobile = true;
+        //menus.Inventory(movementAbility);
+
+        if (!playerNetworkState.inMenu.Value && !IsMobile)
         {
-        var movementAbility = IsMobile ? IsMobile = false : IsMobile = true;
-        playerHUD.Inventory(movementAbility);
+            playerNetworkState.inMenu.Value = true;
+            playerInvMenuUI.SetActive(true);
+            pointerUI.SetActive(false);
+            Cursor.lockState = CursorLockMode.None;
+            Cursor.visible = true;
+        }
+        else if (playerNetworkState.inMenu.Value)
+        {
+            playerNetworkState.inMenu.Value = false;
+            playerInvMenuUI.SetActive(false);
+            pointerUI.SetActive(true);
+            Cursor.lockState = CursorLockMode.Locked;
+            Cursor.visible = false;
         }
     }
 }

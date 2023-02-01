@@ -54,13 +54,13 @@ MonoBehaviour:
       type: 3}
     NetworkPrefabs:
     - Override: 0
-      Prefab: {fileID: 971243048149477626, guid: b634fb841cd4ab94594422a5a1873d3a,
+      Prefab: {fileID: 4846610602681397041, guid: 4528fd65e52bf064ca18ae7ce9653e3c,
         type: 3}
       SourcePrefabToOverride: {fileID: 0}
       SourceHashToOverride: 0
       OverridingTargetPrefab: {fileID: 0}
     - Override: 0
-      Prefab: {fileID: 6920875383982637966, guid: a3ffb7e6d46dbcc408b7d70062705660,
+      Prefab: {fileID: 954847038931463943, guid: 8c61575cdd82b19438ccdc69f70c1b75,
         type: 3}
       SourcePrefabToOverride: {fileID: 0}
       SourceHashToOverride: 0

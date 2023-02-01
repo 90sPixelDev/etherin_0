@@ -1,64 +1,62 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
-using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class MenuManager : NetworkBehaviour
+public class MenuManager : MonoBehaviour
 {
-    public NetworkObject playerNGO;
     public GameObject inventoryUI;
+    public GameObject mainMenuUI;
     public GameObject debugMenuUI;
+    public GameObject pointerUI;
 
     public GameObject cameraGO;
     //public Transform contentWindow;
     //public SelectionManager SelectionManager;
 
-    public GameObject playerHUD;
-    public GameObject mainMenuUI;
-    public GameObject pointerUI;
-
-    public bool isPaused = false;
-    public bool inMenu = false;
 
     // Start is called before the first frame update
     void Start()
     {
-        playerHUD = GameObject.FindGameObjectWithTag("MainUI");
-        mainMenuUI = playerHUD.GetComponentInChildren<MenuButtons>().gameObject;
+        //if (IsHost || IsClient)
+        //{
+        //    playerNGO = NetworkManager.Singleton.LocalClient.PlayerObject;
+        //}
+        mainMenuUI = gameObject.GetComponentInChildren<MenuButtons>().gameObject;
         debugMenuUI = GameObject.Find("DebugMenuUI");
-        inventoryUI.SetActive(false);
-        debugMenuUI.SetActive(false);
-        mainMenuUI.SetActive(false);
+        //inventoryUI.SetActive(false);
+        //debugMenuUI.SetActive(false);
+        //mainMenuUI.SetActive(false);
     }
 
-    public void MainMenu(bool canMove)
+    public void MainMenu(GameObject playerGO)
     {
-        if (IsOwner) {
-            if (!isPaused && !canMove)
-            {
-                isPaused = true;
-                Cursor.lockState = CursorLockMode.None;
-                pointerUI.SetActive(false);
-                mainMenuUI.SetActive(true);
-                inMenu = false;
-                Cursor.visible = true;
-            }
-            else
-            {
-                isPaused = false;
-                Cursor.lockState = CursorLockMode.Locked;
-                pointerUI.SetActive(true);
-                mainMenuUI.SetActive(false);
-                inMenu = false;
-                Cursor.visible = false;
-            }
-        };
+        Debug.Log("Running on MenuManager!");
+        var isMobile = playerGO.GetComponent<CharacterControllerScript>().IsMobile;
+        var playerNetState = playerGO.GetComponent<PlayerNetworkState>();
+        Debug.Log(isMobile);
+
+        if (!playerNetState.inMainMenu.Value && !isMobile)
+        {
+            Cursor.lockState = CursorLockMode.None;
+            pointerUI.SetActive(false);
+            mainMenuUI.SetActive(true);
+            playerNetState.inMainMenu.Value = false;
+            Cursor.visible = true;
+        }
+        else
+        {
+            Cursor.lockState = CursorLockMode.Locked;
+            pointerUI.SetActive(true);
+            mainMenuUI.SetActive(false);
+            playerNetState.inMainMenu.Value = false;
+            Cursor.visible = false;
+        }
     }
 
     public void ResumeButton()
     {
-        MainMenu(true);
+        //MainMenu();
     }
     public void OptionsButton()
     {
@@ -66,31 +64,30 @@ public class MenuManager : NetworkBehaviour
     }
     public void QuitButton()
     {
-        if (!IsOwner) return;
-        Application.Quit();
+        //if (!IsOwner) return;
+        //Application.Quit();
     }
 
-    public void Inventory(bool canMove)
+    public void Inventory(GameObject playerGO)
     {
-        if (IsOwner)
+        Debug.Log("Running on MenuManager!");
+        var playerNetState = playerGO.GetComponent<PlayerNetworkState>();
+
+        if (!playerNetState.inMenu.Value)
         {
-            if (isPaused) return;
-            if (!inMenu && !canMove)
-            {
-                inMenu = true;
-                inventoryUI.SetActive(true);
-                pointerUI.SetActive(false);
-                Cursor.lockState = CursorLockMode.None;
-                Cursor.visible = true;
-            }
-            else if (inMenu)
-            {
-                inMenu = false;
-                inventoryUI.SetActive(false);
-                pointerUI.SetActive(true);
-                Cursor.lockState = CursorLockMode.Locked;
-                Cursor.visible = false;
-            }
+            playerNetState.inMenu.Value = true;
+            inventoryUI.SetActive(true);
+            pointerUI.SetActive(false);
+            Cursor.lockState = CursorLockMode.None;
+            Cursor.visible = true;
+        }
+        else if (playerNetState.inMenu.Value)
+        {
+            playerNetState.inMenu.Value = false;
+            inventoryUI.SetActive(false);
+            pointerUI.SetActive(true);
+            Cursor.lockState = CursorLockMode.Locked;
+            Cursor.visible = false;
         }
     }
 

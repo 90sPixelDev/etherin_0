@@ -127,7 +127,8 @@ GameObject:
   - component: {fileID: 6147783808162911546}
   - component: {fileID: 1646841618837689450}
   - component: {fileID: 6147783808162911544}
-  - component: {fileID: 1941954439}
+  - component: {fileID: 7379773953875663090}
+  - component: {fileID: 6557914035187612746}
   - component: {fileID: 1941954441}
   - component: {fileID: 617790759642814863}
   - component: {fileID: 2557581687125585789}
@@ -315,7 +316,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 6147783808162911544}
         m_TargetAssemblyTypeName: CharacterControllerScript, Assembly-CSharp
-        m_MethodName: OnInventoryUI
+        m_MethodName: OnInventoryUIServerRPC
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -327,6 +328,22 @@ MonoBehaviour:
         m_CallState: 2
     m_ActionId: bf994a9d-b5bf-4a45-9a0e-81beeeed2404
     m_ActionName: Player/Inventory[/Keyboard/tab]
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 6147783808162911544}
+        m_TargetAssemblyTypeName: CharacterControllerScript, Assembly-CSharp
+        m_MethodName: OnTestNetworkVarByKeyPress
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: 2c5b2244-87fa-4089-ab32-06bd2f399348
+    m_ActionName: Player/Debug[/Keyboard/period]
   m_NeverAutoSwitchControlSchemes: 1
   m_DefaultControlScheme: Keyboard&Mouse
   m_DefaultActionMap: Player
@@ -356,28 +373,28 @@ MonoBehaviour:
     m_Interactions: 
     m_SingletonActionBindings: []
     m_Flags: 0
-  playerVitals: {fileID: 0}
+  playerNetworkVitals: {fileID: 0}
   currentSpeed: 12
   walkSpeed: 12
   runSpeed: 18
   gravity: -9.81
   groundDistance: 0.07
+  isGrounded: 0
   groundCheck: {fileID: 6147783809493431735}
   groundMask:
     serializedVersion: 2
-    m_Bits: 0
-  isGrounded: 0
+    m_Bits: 8
   _isRunning: 0
   isOnSlope: 0
-  jumpheight: 1
+  jumpheight: 2
   _IsMobile: 1
   fpsCam: {fileID: 0}
-  playerHUD: {fileID: 0}
+  menus: {fileID: 0}
   playerInventoryUI: {fileID: 0}
   refsLoaded: 0
   testObject: {fileID: 0}
   testString: TESTER!
---- !u!114 &1941954439
+--- !u!114 &7379773953875663090
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -389,17 +406,25 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 48810908a262fad4db5145249889c764, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHealth: 0
-  currentHealth: 0
+  n_MaxHealth:
+    m_InternalValue: 100
+  n_CurrentHealth:
+    m_InternalValue: 0
   healthPercentText: {fileID: 0}
-  maxStamina: 0
-  currentStamina: 0
+  n_MaxStamina:
+    m_InternalValue: 100
+  n_CurrentStamina:
+    m_InternalValue: 0
   staminaPercentText: {fileID: 0}
-  maxFood: 0
-  currentFood: 0
+  maxFood:
+    m_InternalValue: 0
+  currentFood:
+    m_InternalValue: 0
   hungerPercent: {fileID: 0}
-  maxWater: 0
-  currentWater: 0
+  maxWater:
+    m_InternalValue: 0
+  currentWater:
+    m_InternalValue: 0
   thirstPercent: {fileID: 0}
   staminaBar: {fileID: 0}
   healthBar: {fileID: 0}
@@ -408,6 +433,23 @@ MonoBehaviour:
   barNumberAdjustment: 3.28
   needsBarNumberAdjustment: 0.83
   characterControllerScript: {fileID: 0}
+  refsLoaded: 0
+--- !u!114 &6557914035187612746
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6147783808162911541}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bab9b3340ae9edc498e94ad9bd035d12, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  inMenu:
+    m_InternalValue: 0
+  inMainMenu:
+    m_InternalValue: 0
 --- !u!114 &1941954441
 MonoBehaviour:
   m_ObjectHideFlags: 0

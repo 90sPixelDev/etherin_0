@@ -1435,7 +1435,7 @@ GameObject:
   - component: {fileID: 8430603928285039257}
   m_Layer: 5
   m_Name: StaminaPercentText
-  m_TagString: Untagged
+  m_TagString: StaminaPercentText
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1488,7 +1488,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 100%
+  m_text: '-'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -7738,7 +7738,7 @@ GameObject:
   - component: {fileID: 8430603928568906513}
   - component: {fileID: 8430603928568906514}
   - component: {fileID: 8430603928568906515}
-  - component: {fileID: 8430603928568906512}
+  - component: {fileID: 1607867862}
   m_Layer: 0
   m_Name: EventSystem
   m_TagString: PlayerUI
@@ -7818,7 +7818,7 @@ MonoBehaviour:
   m_DeselectOnBackgroundClick: 1
   m_PointerBehavior: 0
   m_CursorLockBehavior: 0
---- !u!114 &8430603928568906512
+--- !u!114 &1607867862
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8018,7 +8018,7 @@ GameObject:
   - component: {fileID: 8430603929495377232}
   m_Layer: 5
   m_Name: UICanvas
-  m_TagString: MainUI
+  m_TagString: AllPlayerUI
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -8127,15 +8127,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 038da8013a81c59449659cc8efb22256, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerNGO: {fileID: 0}
   inventoryUI: {fileID: 8430603930059709263}
-  debugMenuUI: {fileID: 0}
-  cameraGO: {fileID: 0}
-  playerHUD: {fileID: 0}
   mainMenuUI: {fileID: 8430603930032704926}
+  debugMenuUI: {fileID: 8430603929656003060}
   pointerUI: {fileID: 8430603928465229343}
-  isPaused: 0
-  inMenu: 0
+  cameraGO: {fileID: 0}
 --- !u!1 &8430603928577084441
 GameObject:
   m_ObjectHideFlags: 0
@@ -17263,7 +17259,7 @@ GameObject:
   - component: {fileID: 8430603929133474236}
   m_Layer: 5
   m_Name: HealthPercentText
-  m_TagString: Untagged
+  m_TagString: HealthPercentText
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -17316,7 +17312,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 100%
+  m_text: '-'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -31924,7 +31920,7 @@ GameObject:
   - component: {fileID: 8430603929984933069}
   m_Layer: 5
   m_Name: CurrentStaminaBar
-  m_TagString: Untagged
+  m_TagString: CurrentStaminaBar
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -32906,7 +32902,7 @@ GameObject:
   - component: {fileID: 8430603930032704924}
   m_Layer: 5
   m_Name: MainMenuUI
-  m_TagString: Untagged
+  m_TagString: MainUI
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -33416,7 +33412,7 @@ GameObject:
   - component: {fileID: 8430603930059709262}
   m_Layer: 5
   m_Name: PlayerInventoryUI
-  m_TagString: Untagged
+  m_TagString: PlayerInvUI
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -35487,6 +35483,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 940f06a4fb4e279458c1d6344ddbcc99, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isTimeRunning: 0
   hand: {fileID: 4581701820564557778}
   clock: {fileID: 8430603928413021704}
   gameHour: {fileID: 8430603929832087176}
@@ -37867,7 +37864,7 @@ GameObject:
   - component: {fileID: 8430603930259490579}
   m_Layer: 5
   m_Name: CurrentHealthBar
-  m_TagString: Untagged
+  m_TagString: CurrentHealthBar
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

@@ -5,7 +5,7 @@ using TMPro;
 //[ExecuteInEditMode]
 public class ClockTime : MonoBehaviour
 {
-
+    public bool isTimeRunning = false;
     public Image hand;
     public Image clock;
     public TextMeshProUGUI gameHour;
@@ -20,17 +20,22 @@ public class ClockTime : MonoBehaviour
     private DayNightCycle dayNightCycle;
 
     // Start is called before the first frame update
-    void Start()
-    {
-        dayNightCycle = GameObject.Find("DayNightCycleNew").GetComponent<DayNightCycle>();
-        clockCompletionTime = (dayNightCycle.targetDayLength * 60);
-    }
 
     void Update()
     {
-        ClockMovement();
-        CalculateGameTime();
-        UpdateGameDay();
+        if (isTimeRunning)
+        {
+            ClockMovement();
+            CalculateGameTime();
+            UpdateGameDay();
+        }
+    }
+
+    public void SetReferences()
+    {
+        dayNightCycle = GameObject.Find("DayNightCycleNew").GetComponent<DayNightCycle>();
+        clockCompletionTime = (dayNightCycle.targetDayLength * 60);
+        isTimeRunning = true;
     }
 
     public void ClockMovement()

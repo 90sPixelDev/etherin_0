@@ -5,12 +5,27 @@ using UnityEngine;
 
 public class PlayerNetworkManager : NetworkBehaviour
 {
-    private NetworkList<PlayerNetworkObjectReference> players;
+    /// <summary>
+    /// A list of all players connected to the game and their basic info.
+    /// </summary>
+    private NetworkList<PlayerNetworkObjectReference> _players;
+    public NetworkList<PlayerNetworkObjectReference> Players { get => _players; set => _players = value; }
+
+    [Header("Player References")]
+    [SerializeField] private GameObject mainMenuUI;
+    [SerializeField] private GameObject playerInvMenuUI;
+    [SerializeField] private GameObject debugMenuUI;
+    [SerializeField] private GameObject pointerUI;
 
     private void Awake()
     {
         DontDestroyOnLoad(gameObject);
-        players = new NetworkList<PlayerNetworkObjectReference>();
+        Players = new NetworkList<PlayerNetworkObjectReference>();
+
+        mainMenuUI = GameObject.FindGameObjectWithTag("MainUI");
+        playerInvMenuUI = GameObject.FindGameObjectWithTag("PlayerInvUI");
+        pointerUI = GameObject.Find("PointerUI");
+        debugMenuUI = GameObject.Find("DebugMenuUI");
     }
 
     public override void OnNetworkSpawn()
@@ -44,19 +59,40 @@ public class PlayerNetworkManager : NetworkBehaviour
 
     private void HandleClientConnected(ulong clientId)
     {
-        Debug.Log("CONNECTED");
-        players.Add(new PlayerNetworkObjectReference(clientId));
+        Debug.Log("Running HandleClientConnected!");
+        Players.Add(new PlayerNetworkObjectReference(clientId, clientId.ToString()));
+
+        var playerCharaScript = NetworkManager.Singleton.ConnectedClients[clientId].PlayerObject.GetComponent<CharacterControllerScript>();
+
+        playerCharaScript.mainMenuUI = mainMenuUI;
+        playerCharaScript.playerInvMenuUI = playerInvMenuUI;
+        playerCharaScript.pointerUI = playerInvMenuUI;
+        playerCharaScript.debugMenuUI = debugMenuUI;
     }
 
     private void HandleClientDisconnected(ulong clientId)
     {
-        for (int i = 0; i < players.Count; i++)
+        for (int i = 0; i < Players.Count; i++)
         {
-            if (players[i].ClientId == clientId)
+            if (Players[i].ClientId == clientId)
             {
-                players.RemoveAt(i);
+                Players.RemoveAt(i);
                 break;
             }
         }
+    }
+
+    public void SendReferences()
+    {
+        Debug.Log("Running SendReferences Manual!");
+
+        var playerCharaScript = NetworkManager.Singleton.LocalClient.PlayerObject.GetComponent<CharacterControllerScript>();
+
+        //var playerCharaScript = NetworkManager.Singleton.ConnectedClients[clientId].PlayerObject.GetComponent<CharacterControllerScript>();
+
+        //playerCharaScript.mainMenuUI = mainMenuUI;
+        //playerCharaScript.playerInvMenuUI = playerInvMenuUI;
+        //playerCharaScript.pointerUI = playerInvMenuUI;
+        //playerCharaScript.debugMenuUI = debugMenuUI;
     }
 }

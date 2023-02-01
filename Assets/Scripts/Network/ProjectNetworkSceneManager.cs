@@ -19,13 +19,9 @@ public class ProjectNetworkSceneManager : NetworkBehaviour
     [SerializeField]
     private string m_SceneName;
     [SerializeField]
-    private NetworkObject playerCam;
+    private ClockTime clockTime;
     [SerializeField]
-    private NetworkObject menuUI;
-    [SerializeField]
-    private NetworkObjectReference[] playerRefs;
-    [SerializeField]
-    private bool refsLoaded = false;
+    private PlayerNetworkManager playerNetworkManager;
 
     public override void OnNetworkSpawn()
     {
@@ -43,13 +39,6 @@ public class ProjectNetworkSceneManager : NetworkBehaviour
     {
         if (sceneEvent.SceneName == m_SceneName && sceneEvent.SceneEventType == SceneEventType.LoadComplete)
         {
-            if (!refsLoaded)
-            {
-                playerCam = GameObject.FindGameObjectWithTag("FPCam").GetComponent<NetworkObject>();
-                menuUI = GameObject.FindGameObjectWithTag("PlayerUI").GetComponent<NetworkObject>();
-                refsLoaded = true;
-            }
-
             foreach (NetworkClient client in NetworkManager.Singleton.ConnectedClientsList)
             {
                 SetReferences(client.ClientId);
@@ -62,16 +51,14 @@ public class ProjectNetworkSceneManager : NetworkBehaviour
         Debug.Log("Setting References!");
         var playerGO = NetworkManager.Singleton.ConnectedClients[client].PlayerObject;
 
-        if (playerGO.GetComponent<CharacterControllerScript>().refsLoaded)
+        ClientRpcParams clientRpcParams = new()
         {
-            Debug.Log("Refs are already Loaded!");
-        }
-        else
-        {
-            playerGO.GetComponent<CharacterControllerScript>().SetReferencesClientRPC();
-            //playerGO.GetComponent<UnityEngine.InputSystem.PlayerInput>().enabled = true;
-            Debug.Log($"Refs are now set for {client}!");
-        }
+           Send = new ClientRpcSendParams { TargetClientIds = new List<ulong> { client } }
+        };
+
+        playerGO.GetComponent<CharacterControllerScript>().SetReferencesClientRPC(clientRpcParams);
+        playerGO.GetComponent<PlayerNetworkVitals>().SetVitalsReferencesClientRPC(clientRpcParams);
+        Debug.Log($"Refs are now set for Client:{client}!");
     }
 
     private void Awake()

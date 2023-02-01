@@ -3,22 +3,19 @@ using System.Collections.Generic;
 using Unity.Netcode;
 using UnityEngine;
 
-public class MainMenuUI : MonoBehaviour
+public class StartScreenUI : MonoBehaviour
 {
-    [SerializeField] private NetworkManager networkManager;
-    [SerializeField] private GameObject mainMenuUI;
-
     public void HostSessionBtn()
     {
-        networkManager.StartHost();
+        NetworkManager.Singleton.StartHost();
     }
     public void JoinSessionBtn()
     {
-        networkManager.StartClient();
+        NetworkManager.Singleton.StartClient();
     }
     public void StartServerBtn()
     {
-        networkManager.StartServer();
+        NetworkManager.Singleton.StartServer();
     }
     public void QUitGameBtn()
     {

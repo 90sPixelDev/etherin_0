@@ -10,11 +10,17 @@ TagManager:
   - InventoryUI
   - FPCam
   - PlayerUI
+  - CurrentHealthBar
+  - CurrentStaminaBar
+  - HealthPercentText
+  - StaminaPercentText
+  - AllPlayerUI
+  - PlayerInvUI
   layers:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - 
+  - Ground
   - Water
   - UI
   - 

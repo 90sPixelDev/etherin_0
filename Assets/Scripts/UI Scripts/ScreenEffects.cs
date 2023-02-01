@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 public class ScreenEffects : MonoBehaviour
 {
-    public PlayerVitals PlayerVitals;
+    public PlayerNetworkVitals PlayerVitals;
 
     public Image hurtBG;
 
