@@ -32,7 +32,7 @@ public class MenuManager : MonoBehaviour
     public void MainMenu(GameObject playerGO)
     {
         Debug.Log("Running on MenuManager!");
-        var isMobile = playerGO.GetComponent<CharacterControllerScript>().IsMobile;
+        var isMobile = playerGO.GetComponent<CharacterControllerScript>().canMove;
         var playerNetState = playerGO.GetComponent<PlayerNetworkState>();
         Debug.Log(isMobile);
 

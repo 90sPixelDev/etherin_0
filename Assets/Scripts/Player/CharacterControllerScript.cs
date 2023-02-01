@@ -33,7 +33,9 @@ public class CharacterControllerScript : NetworkBehaviour
     [SerializeField] public int jumpheight = 2;
     [Header("Conditions")]
     [SerializeField] private bool _IsMobile = true;
-    public bool IsMobile { get => _IsMobile; set => _IsMobile = value; }
+    public bool canMove { get => _IsMobile; set => _IsMobile = value; }
+    [SerializeField] private bool _CanLook = true;
+    public bool canLook { get => _CanLook; set => _CanLook = value; }
 
     [Header("References Extra")]
     [SerializeField] public Transform fpsCam;
@@ -85,6 +87,12 @@ public class CharacterControllerScript : NetworkBehaviour
         pointerUI = GameObject.Find("PointerUI");
         debugMenuUI = GameObject.Find("DebugMenuUI");
 
+        mainMenuUI.SetActive(false);
+        playerInvMenuUI.SetActive(false);
+        debugMenuUI.SetActive(false);
+
+        Cursor.lockState = CursorLockMode.Locked;
+
         refsLoaded = true;
     }
 
@@ -94,16 +102,18 @@ public class CharacterControllerScript : NetworkBehaviour
         //return;
         if (IsOwner && refsLoaded)
         {
-            mainMenuUI.SetActive(false);
-            playerInvMenuUI.SetActive(false);
-            debugMenuUI.SetActive(false);
-
-            if (IsMobile)
+            if (canMove && canLook)
+            {
+                PlayerMove();
+                PlayerLook();
+                CheckIfOnGround();
+                CameraFollowPlayer();
+            }
+            else if (canMove)
             {
                 PlayerMove();
                 CheckIfOnGround();
                 CameraFollowPlayer();
-                PlayerLook();
             }
 
             velocity.y += gravity * Time.deltaTime;
@@ -204,33 +214,56 @@ public class CharacterControllerScript : NetworkBehaviour
         currentSpeed *= 1.35f;
     }
 
-    //public void OnMenu()
-    //{
-    //    if (IsOwner)
-    //    {
-    //        var movementAbility = IsMobile ? IsMobile = false : IsMobile = true;
-    //        menus.MainMenu();
-    //    }
-    //}
-    
+    public void OnMenu()
+    {
+        if (!IsOwner) return;
+        Debug.Log("MENU!");
+
+
+        // Turning on Menu
+        if (!playerNetworkState.inMainMenu.Value && canMove && canLook)
+        {
+            canMove = false;
+            canLook = false;
+            Cursor.lockState = CursorLockMode.None;
+            pointerUI.SetActive(false);
+            mainMenuUI.SetActive(true);
+            playerNetworkState.inMainMenu.Value = true;
+            Cursor.visible = true;
+        }
+        // Turning off Menu
+        else if (playerNetworkState.inMainMenu.Value && !canMove && !canLook)
+        {
+            canMove = true;
+            canLook = true;
+            Cursor.lockState = CursorLockMode.Locked;
+            pointerUI.SetActive(true);
+            mainMenuUI.SetActive(false);
+            playerNetworkState.inMainMenu.Value = false;
+            Cursor.visible = false;
+        }
+    }
+
     public void OnInventoryUI()
     {
         if (!IsOwner) return;
         Debug.Log("INVENTORY!");
 
-        //var movementAbility = IsMobile ? IsMobile = false : IsMobile = true;
-        //menus.Inventory(movementAbility);
 
-        if (!playerNetworkState.inMenu.Value && !IsMobile)
+        // Turning on Inventory
+        if (!playerNetworkState.inMenu.Value && canLook && canMove)
         {
+            canLook = false;
             playerNetworkState.inMenu.Value = true;
             playerInvMenuUI.SetActive(true);
             pointerUI.SetActive(false);
             Cursor.lockState = CursorLockMode.None;
             Cursor.visible = true;
         }
-        else if (playerNetworkState.inMenu.Value)
+        // Turning off Inventory
+        else if (playerNetworkState.inMenu.Value && !canLook)
         {
+            canLook = true;
             playerNetworkState.inMenu.Value = false;
             playerInvMenuUI.SetActive(false);
             pointerUI.SetActive(true);

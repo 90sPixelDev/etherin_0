@@ -316,7 +316,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 6147783808162911544}
         m_TargetAssemblyTypeName: CharacterControllerScript, Assembly-CSharp
-        m_MethodName: OnInventoryUIServerRPC
+        m_MethodName: OnInventoryUI
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -374,6 +374,7 @@ MonoBehaviour:
     m_SingletonActionBindings: []
     m_Flags: 0
   playerNetworkVitals: {fileID: 0}
+  playerNetworkState: {fileID: 0}
   currentSpeed: 12
   walkSpeed: 12
   runSpeed: 18
@@ -389,9 +390,11 @@ MonoBehaviour:
   jumpheight: 2
   _IsMobile: 1
   fpsCam: {fileID: 0}
-  menus: {fileID: 0}
-  playerInventoryUI: {fileID: 0}
   refsLoaded: 0
+  mainMenuUI: {fileID: 0}
+  playerInvMenuUI: {fileID: 0}
+  debugMenuUI: {fileID: 0}
+  pointerUI: {fileID: 0}
   testObject: {fileID: 0}
   testString: TESTER!
 --- !u!114 &7379773953875663090

@@ -10,7 +10,7 @@ public class PlayerNetworkState : NetworkBehaviour
 
     private void Start()
     {
-        inMenu = new(false);
-        inMainMenu = new(false);
+        inMenu = new NetworkVariable<bool> (false);
+        inMainMenu = new NetworkVariable<bool> (false);
     }
 }
