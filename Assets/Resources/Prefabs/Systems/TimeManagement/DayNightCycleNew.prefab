@@ -45,8 +45,8 @@ Light:
   serializedVersion: 10
   m_Type: 1
   m_Shape: 0
-  m_Color: {r: 0.8066038, g: 1, b: 0.99443334, a: 1}
-  m_Intensity: 0.15
+  m_Color: {r: 0.6543699, g: 0.7799039, b: 0.8018868, a: 1}
+  m_Intensity: 0.05
   m_Range: 10
   m_SpotAngle: 30
   m_InnerSpotAngle: 21.80208
@@ -88,7 +88,7 @@ Light:
   m_Lightmapping: 4
   m_LightShadowCasterMode: 0
   m_AreaSize: {x: 1, y: 1}
-  m_BounceIntensity: 0.3
+  m_BounceIntensity: 0.01
   m_ColorTemperature: 6570
   m_UseColorTemperature: 0
   m_BoundingSphereOverride: {x: 0, y: 0, z: 0, w: 0}
@@ -159,7 +159,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1730931893117141545}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0.9753366, w: -0.22072265}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -191,7 +191,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6920875383180627836}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0.97534233, w: -0.22069742}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -246,32 +246,33 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 61d74c105376ac94ab6841d2183a6af0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _targetDayLength: 1
-  _timeOfDay: 0.353
-  _dayNumber: 1
-  _yearNumber: 0
+  _targetDayLength: 0.5
+  _timeOfDay: 6
+  _dayNumber: 5
+  _yearNumber: 1
   _yearLength: 100
-  pause: 1
-  dailyRotation: {fileID: 6920875383180627837}
+  pause: 0
+  sunRotation: {fileID: 6920875383180627837}
+  intensity: 0.9025854
   SunBaseIntensity: 1
   sunVariation: 1.5
   sunColor:
     serializedVersion: 2
-    key0: {r: 0, g: 0, b: 0, a: 1}
-    key1: {r: 0.6981132, g: 0.44400054, b: 0.24038802, a: 1}
-    key2: {r: 1, g: 0.9675241, b: 0.504717, a: 0}
-    key3: {r: 0, g: 0, b: 0, a: 0}
-    key4: {r: 0, g: 0, b: 0, a: 0}
-    key5: {r: 0, g: 0, b: 0, a: 0}
-    key6: {r: 0, g: 0, b: 0, a: 0}
+    key0: {r: 0.08859915, g: 0.0936573, b: 0.103773594, a: 1}
+    key1: {r: 0.12744749, g: 0.1317051, b: 0.1509434, a: 1}
+    key2: {r: 0.6981132, g: 0.44400054, b: 0.24038802, a: 0}
+    key3: {r: 1, g: 0.96862745, b: 0.5058824, a: 0}
+    key4: {r: 0.69803923, g: 0.44313726, b: 0.23921569, a: 0}
+    key5: {r: 0.1254902, g: 0.13333334, b: 0.14901961, a: 0}
+    key6: {r: 0.09019608, g: 0.09411766, b: 0.10196079, a: 0}
     key7: {r: 0, g: 0, b: 0, a: 0}
-    ctime0: 0
-    ctime1: 5767
-    ctime2: 65535
-    ctime3: 0
-    ctime4: 0
-    ctime5: 0
-    ctime6: 0
+    ctime0: 2207
+    ctime1: 9839
+    ctime2: 16384
+    ctime3: 32787
+    ctime4: 49151
+    ctime5: 55696
+    ctime6: 63990
     ctime7: 0
     atime0: 0
     atime1: 65535
@@ -282,7 +283,65 @@ MonoBehaviour:
     atime6: 0
     atime7: 0
     m_Mode: 0
-    m_NumColorKeys: 3
+    m_NumColorKeys: 7
+    m_NumAlphaKeys: 2
+  directionalColor:
+    serializedVersion: 2
+    key0: {r: 0.10980393, g: 0.10980393, b: 0.10980393, a: 1}
+    key1: {r: 0.24528301, g: 0.2156477, b: 0.16082235, a: 1}
+    key2: {r: 1, g: 0.988737, b: 0.8160377, a: 0}
+    key3: {r: 0.8765432, g: 0.8765432, b: 0.8765432, a: 0}
+    key4: {r: 1, g: 0.98823535, b: 0.81568635, a: 0}
+    key5: {r: 0.23529413, g: 0.20392159, b: 0.15294118, a: 0}
+    key6: {r: 0.11764707, g: 0.11764707, b: 0.11764707, a: 0}
+    key7: {r: 0, g: 0, b: 0, a: 0}
+    ctime0: 0
+    ctime1: 10291
+    ctime2: 21627
+    ctime3: 32787
+    ctime4: 43253
+    ctime5: 55605
+    ctime6: 65535
+    ctime7: 0
+    atime0: 0
+    atime1: 65535
+    atime2: 0
+    atime3: 0
+    atime4: 0
+    atime5: 0
+    atime6: 0
+    atime7: 0
+    m_Mode: 0
+    m_NumColorKeys: 7
+    m_NumAlphaKeys: 2
+  fogColor:
+    serializedVersion: 2
+    key0: {r: 0.09723212, g: 0.10269966, b: 0.1792453, a: 1}
+    key1: {r: 0.14117648, g: 0.14509805, b: 0.24705884, a: 1}
+    key2: {r: 0.8962264, g: 0.8783409, b: 0.6637148, a: 0}
+    key3: {r: 1, g: 1, b: 1, a: 0}
+    key4: {r: 0.8980393, g: 0.87843144, b: 0.6627451, a: 0}
+    key5: {r: 0.13999642, g: 0.14501008, b: 0.24528301, a: 0}
+    key6: {r: 0.098039225, g: 0.10196079, b: 0.18039216, a: 0}
+    key7: {r: 0.027450982, g: 0.03529412, b: 0.14117648, a: 0}
+    ctime0: 0
+    ctime1: 9839
+    ctime2: 19638
+    ctime3: 32768
+    ctime4: 45897
+    ctime5: 55696
+    ctime6: 65535
+    ctime7: 65535
+    atime0: 0
+    atime1: 65535
+    atime2: 0
+    atime3: 0
+    atime4: 0
+    atime5: 0
+    atime6: 0
+    atime7: 0
+    m_Mode: 0
+    m_NumColorKeys: 7
     m_NumAlphaKeys: 2
   sunSeasonalRotation: {fileID: 8680671194483412097}
   maxSeasonalTilt: 0
@@ -347,8 +406,8 @@ Light:
   serializedVersion: 10
   m_Type: 1
   m_Shape: 0
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_Intensity: 1
+  m_Color: {r: 0.9310709, g: 0.92587477, b: 0.84966433, a: 1}
+  m_Intensity: 2.353878
   m_Range: 10
   m_SpotAngle: 30
   m_InnerSpotAngle: 21.80208
@@ -390,7 +449,7 @@ Light:
   m_Lightmapping: 4
   m_LightShadowCasterMode: 0
   m_AreaSize: {x: 1, y: 1}
-  m_BounceIntensity: 1
+  m_BounceIntensity: 0.3
   m_ColorTemperature: 6570
   m_UseColorTemperature: 0
   m_BoundingSphereOverride: {x: 0, y: 0, z: 0, w: 0}

@@ -1,9 +1,10 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using Unity.Netcode;
 using UnityEngine;
 
 //[ExecuteInEditMode]
-public class DayNightCycle : MonoBehaviour
+public class DayNightCycle : NetworkBehaviour
 {
     [Header("Time")]
     [Tooltip("Day Length in Minutes")]
@@ -19,12 +20,12 @@ public class DayNightCycle : MonoBehaviour
 
     [SerializeField]
     [Range(0f, 24f)]
-    private float _timeOfDay;
+    private NetworkVariable<float> _timeOfDay = new NetworkVariable<float>(0f, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Server);
     public float timeOfDay
     {
         get
         {
-            return _timeOfDay;
+            return _timeOfDay.Value;
         }
     }
 
@@ -89,27 +90,43 @@ public class DayNightCycle : MonoBehaviour
 
     private void Start()
     {
-        sunSeasonalRotation = GameObject.Find("Seasonal Rotation").GetComponent<Transform>();
-        sunRotation = GameObject.Find("Sun Rotation").GetComponent<Transform>();
-        moonRotation = GameObject.Find("Moon Rotation").GetComponent<Transform>();
-        sun = GameObject.Find("Sun").GetComponent<Light>();
+        if (IsServer)
+        {
+            sunSeasonalRotation = GameObject.Find("Seasonal Rotation").GetComponent<Transform>();
+            sunRotation = GameObject.Find("Sun Rotation").GetComponent<Transform>();
+            moonRotation = GameObject.Find("Moon Rotation").GetComponent<Transform>();
+            sun = GameObject.Find("Sun").GetComponent<Light>();
+        }
     }
 
     private void Update()
     {
-        if (!pause)
+        if (!pause && IsServer)
         {
             UpdateTimeScale();
             UpdateTime();
+
+            AdjustSunRotation(timeOfDay / 24f);
+            AdjustSunColor(timeOfDay / 24f);
+            AdjustAmbientColor(timeOfDay / 24f);
+            AdjustFogColor(timeOfDay / 24f);
+            SunIntensity();
+
+            AdjustMoonRotation(timeOfDay / 24f);
         }
+    }
 
-        AdjustSunRotation(timeOfDay / 24f);
-        AdjustSunColor(timeOfDay / 24f);
-        AdjustAmbientColor(timeOfDay / 24f);
-        AdjustFogColor(timeOfDay / 24f);
-        SunIntensity();
+    public override void OnNetworkSpawn()
+    {
+        if (IsClient)
+        {
+            sunSeasonalRotation = GameObject.Find("Seasonal Rotation").GetComponent<Transform>();
+            sunRotation = GameObject.Find("Sun Rotation").GetComponent<Transform>();
+            moonRotation = GameObject.Find("Moon Rotation").GetComponent<Transform>();
+            sun = GameObject.Find("Sun").GetComponent<Light>();
 
-        AdjustMoonRotation(timeOfDay / 24f);
+            _timeOfDay.OnValueChanged += UpdateTimeForClients;
+        }
     }
 
     private void UpdateTimeScale()
@@ -119,11 +136,11 @@ public class DayNightCycle : MonoBehaviour
 
     private void UpdateTime()
     {
-        _timeOfDay += Time.deltaTime * _timeScale / 3600; //Seconds in an hour
-        if (_timeOfDay > 24) //Day completed!
+        _timeOfDay.Value += Time.deltaTime * _timeScale / 3600; //Seconds in an hour
+        if (_timeOfDay.Value > 24) //Day completed!
         {
             _dayNumber++;
-            _timeOfDay -= 24;
+            _timeOfDay.Value -= 24;
 
             if (_dayNumber > _yearLength) //Year has been completed!
             {
@@ -131,6 +148,17 @@ public class DayNightCycle : MonoBehaviour
                 _dayNumber = 1;
             }
         }
+    }
+
+    private void UpdateTimeForClients(float previousValue, float newValue)
+    {
+        AdjustSunRotation(newValue / 24f);
+        AdjustSunColor(newValue / 24f);
+        AdjustAmbientColor(newValue / 24f);
+        AdjustFogColor(newValue / 24f);
+        SunIntensity();
+
+        AdjustMoonRotation(newValue / 24f);
     }
 
     //Rotates the sun daily (and seasonally soon too)

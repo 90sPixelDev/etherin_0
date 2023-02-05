@@ -20,7 +20,12 @@ public class ClockTime : MonoBehaviour
     private DayNightCycle dayNightCycle;
 
     // Start is called before the first frame update
-
+    private void Start()
+    {
+        dayNightCycle = GameObject.Find("DayNightCycleNew").GetComponent<DayNightCycle>();
+        clockCompletionTime = (dayNightCycle.targetDayLength * 60);
+        isTimeRunning = true;
+    }
     void Update()
     {
         if (isTimeRunning)
@@ -29,13 +34,6 @@ public class ClockTime : MonoBehaviour
             CalculateGameTime();
             UpdateGameDay();
         }
-    }
-
-    public void SetReferences()
-    {
-        dayNightCycle = GameObject.Find("DayNightCycleNew").GetComponent<DayNightCycle>();
-        clockCompletionTime = (dayNightCycle.targetDayLength * 60);
-        isTimeRunning = true;
     }
 
     public void ClockMovement()

@@ -57,7 +57,7 @@ namespace PlayerControls
                     ""initialStateCheck"": false
                 },
                 {
-                    ""name"": ""Fire"",
+                    ""name"": ""Click"",
                     ""type"": ""Button"",
                     ""id"": ""9975a3a0-e18a-462e-a0de-8d859925bd8d"",
                     ""expectedControlType"": ""Button"",
@@ -99,7 +99,7 @@ namespace PlayerControls
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """",
-                    ""initialStateCheck"": false
+                    ""initialStateCheck"": true
                 }
             ],
             ""bindings"": [
@@ -231,7 +231,7 @@ namespace PlayerControls
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": "";Gamepad"",
-                    ""action"": ""Fire"",
+                    ""action"": ""Click"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -242,7 +242,7 @@ namespace PlayerControls
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": "";Keyboard&Mouse"",
-                    ""action"": ""Fire"",
+                    ""action"": ""Click"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -253,7 +253,7 @@ namespace PlayerControls
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""Fire"",
+                    ""action"": ""Click"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -264,7 +264,7 @@ namespace PlayerControls
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Joystick"",
-                    ""action"": ""Fire"",
+                    ""action"": ""Click"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -275,7 +275,7 @@ namespace PlayerControls
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""XR"",
-                    ""action"": ""Fire"",
+                    ""action"": ""Click"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -286,6 +286,17 @@ namespace PlayerControls
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Keyboard&Mouse"",
+                    ""action"": ""Jump"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""4560d63d-5428-4c2f-a25d-b22044cdc158"",
+                    ""path"": ""<Gamepad>/buttonSouth"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Gamepad"",
                     ""action"": ""Jump"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
@@ -303,11 +314,33 @@ namespace PlayerControls
                 },
                 {
                     ""name"": """",
+                    ""id"": ""a5892040-060d-40a7-be38-b163faaa1796"",
+                    ""path"": ""<Gamepad>/start"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Gamepad"",
+                    ""action"": ""Pause"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
                     ""id"": ""b2b0c948-3981-40ea-b83a-5c4bb66394e0"",
                     ""path"": ""<Keyboard>/leftShift"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": """",
+                    ""groups"": ""Keyboard&Mouse"",
+                    ""action"": ""Run"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""09a4add0-cf76-42f0-a606-58108e23d407"",
+                    ""path"": ""<Gamepad>/leftStickPress"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Gamepad"",
                     ""action"": ""Run"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
@@ -318,7 +351,18 @@ namespace PlayerControls
                     ""path"": ""<Keyboard>/tab"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": """",
+                    ""groups"": ""Keyboard&Mouse"",
+                    ""action"": ""Inventory"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""8816b606-307b-4c92-b057-c0af2a0eb049"",
+                    ""path"": ""<Gamepad>/buttonWest"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Gamepad"",
                     ""action"": ""Inventory"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
@@ -426,6 +470,24 @@ namespace PlayerControls
                     ""type"": ""PassThrough"",
                     ""id"": ""ddc97a7a-d666-4b48-8afc-6bdac3a4edb4"",
                     ""expectedControlType"": ""Quaternion"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""InventoryUI"",
+                    ""type"": ""Button"",
+                    ""id"": ""76c7b763-7860-4e61-b6bb-33954924f523"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""MenuUI"",
+                    ""type"": ""Button"",
+                    ""id"": ""bd229f04-2295-46c1-80ee-0270673e14c6"",
+                    ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
@@ -710,10 +772,10 @@ namespace PlayerControls
                 {
                     ""name"": """",
                     ""id"": ""82627dcc-3b13-4ba9-841d-e4b746d6553e"",
-                    ""path"": ""*/{Cancel}"",
+                    ""path"": ""<Gamepad>/buttonEast"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": ""Keyboard&Mouse;Gamepad;Joystick;XR"",
+                    ""groups"": ""Gamepad"",
                     ""action"": ""Cancel"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
@@ -827,6 +889,50 @@ namespace PlayerControls
                     ""action"": ""TrackedDeviceOrientation"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""216a4302-9e8c-4fb1-a3f0-c2ea0ec758ba"",
+                    ""path"": ""<Gamepad>/buttonWest"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Gamepad"",
+                    ""action"": ""InventoryUI"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""e8da07ee-36c5-47e0-ba70-55c77b738422"",
+                    ""path"": ""<Keyboard>/tab"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard&Mouse"",
+                    ""action"": ""InventoryUI"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""0eb462f3-a9f1-44b0-bc40-61c2a95b0763"",
+                    ""path"": ""<Gamepad>/start"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""MenuUI"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""cc235e2f-d0f9-4060-9cf3-0c895ea2873c"",
+                    ""path"": ""<Keyboard>/escape"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""MenuUI"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -888,7 +994,7 @@ namespace PlayerControls
             m_Player_Move = m_Player.FindAction("Move", throwIfNotFound: true);
             m_Player_Look = m_Player.FindAction("Look", throwIfNotFound: true);
             m_Player_Jump = m_Player.FindAction("Jump", throwIfNotFound: true);
-            m_Player_Fire = m_Player.FindAction("Fire", throwIfNotFound: true);
+            m_Player_Click = m_Player.FindAction("Click", throwIfNotFound: true);
             m_Player_Pause = m_Player.FindAction("Pause", throwIfNotFound: true);
             m_Player_Run = m_Player.FindAction("Run", throwIfNotFound: true);
             m_Player_Inventory = m_Player.FindAction("Inventory", throwIfNotFound: true);
@@ -905,6 +1011,8 @@ namespace PlayerControls
             m_UI_RightClick = m_UI.FindAction("RightClick", throwIfNotFound: true);
             m_UI_TrackedDevicePosition = m_UI.FindAction("TrackedDevicePosition", throwIfNotFound: true);
             m_UI_TrackedDeviceOrientation = m_UI.FindAction("TrackedDeviceOrientation", throwIfNotFound: true);
+            m_UI_InventoryUI = m_UI.FindAction("InventoryUI", throwIfNotFound: true);
+            m_UI_MenuUI = m_UI.FindAction("MenuUI", throwIfNotFound: true);
         }
 
         public void Dispose()
@@ -967,7 +1075,7 @@ namespace PlayerControls
         private readonly InputAction m_Player_Move;
         private readonly InputAction m_Player_Look;
         private readonly InputAction m_Player_Jump;
-        private readonly InputAction m_Player_Fire;
+        private readonly InputAction m_Player_Click;
         private readonly InputAction m_Player_Pause;
         private readonly InputAction m_Player_Run;
         private readonly InputAction m_Player_Inventory;
@@ -979,7 +1087,7 @@ namespace PlayerControls
             public InputAction @Move => m_Wrapper.m_Player_Move;
             public InputAction @Look => m_Wrapper.m_Player_Look;
             public InputAction @Jump => m_Wrapper.m_Player_Jump;
-            public InputAction @Fire => m_Wrapper.m_Player_Fire;
+            public InputAction @Click => m_Wrapper.m_Player_Click;
             public InputAction @Pause => m_Wrapper.m_Player_Pause;
             public InputAction @Run => m_Wrapper.m_Player_Run;
             public InputAction @Inventory => m_Wrapper.m_Player_Inventory;
@@ -1002,9 +1110,9 @@ namespace PlayerControls
                     @Jump.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnJump;
                     @Jump.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnJump;
                     @Jump.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnJump;
-                    @Fire.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnFire;
-                    @Fire.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnFire;
-                    @Fire.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnFire;
+                    @Click.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnClick;
+                    @Click.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnClick;
+                    @Click.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnClick;
                     @Pause.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnPause;
                     @Pause.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnPause;
                     @Pause.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnPause;
@@ -1030,9 +1138,9 @@ namespace PlayerControls
                     @Jump.started += instance.OnJump;
                     @Jump.performed += instance.OnJump;
                     @Jump.canceled += instance.OnJump;
-                    @Fire.started += instance.OnFire;
-                    @Fire.performed += instance.OnFire;
-                    @Fire.canceled += instance.OnFire;
+                    @Click.started += instance.OnClick;
+                    @Click.performed += instance.OnClick;
+                    @Click.canceled += instance.OnClick;
                     @Pause.started += instance.OnPause;
                     @Pause.performed += instance.OnPause;
                     @Pause.canceled += instance.OnPause;
@@ -1063,6 +1171,8 @@ namespace PlayerControls
         private readonly InputAction m_UI_RightClick;
         private readonly InputAction m_UI_TrackedDevicePosition;
         private readonly InputAction m_UI_TrackedDeviceOrientation;
+        private readonly InputAction m_UI_InventoryUI;
+        private readonly InputAction m_UI_MenuUI;
         public struct UIActions
         {
             private @Player_Controls_Input m_Wrapper;
@@ -1077,6 +1187,8 @@ namespace PlayerControls
             public InputAction @RightClick => m_Wrapper.m_UI_RightClick;
             public InputAction @TrackedDevicePosition => m_Wrapper.m_UI_TrackedDevicePosition;
             public InputAction @TrackedDeviceOrientation => m_Wrapper.m_UI_TrackedDeviceOrientation;
+            public InputAction @InventoryUI => m_Wrapper.m_UI_InventoryUI;
+            public InputAction @MenuUI => m_Wrapper.m_UI_MenuUI;
             public InputActionMap Get() { return m_Wrapper.m_UI; }
             public void Enable() { Get().Enable(); }
             public void Disable() { Get().Disable(); }
@@ -1116,6 +1228,12 @@ namespace PlayerControls
                     @TrackedDeviceOrientation.started -= m_Wrapper.m_UIActionsCallbackInterface.OnTrackedDeviceOrientation;
                     @TrackedDeviceOrientation.performed -= m_Wrapper.m_UIActionsCallbackInterface.OnTrackedDeviceOrientation;
                     @TrackedDeviceOrientation.canceled -= m_Wrapper.m_UIActionsCallbackInterface.OnTrackedDeviceOrientation;
+                    @InventoryUI.started -= m_Wrapper.m_UIActionsCallbackInterface.OnInventoryUI;
+                    @InventoryUI.performed -= m_Wrapper.m_UIActionsCallbackInterface.OnInventoryUI;
+                    @InventoryUI.canceled -= m_Wrapper.m_UIActionsCallbackInterface.OnInventoryUI;
+                    @MenuUI.started -= m_Wrapper.m_UIActionsCallbackInterface.OnMenuUI;
+                    @MenuUI.performed -= m_Wrapper.m_UIActionsCallbackInterface.OnMenuUI;
+                    @MenuUI.canceled -= m_Wrapper.m_UIActionsCallbackInterface.OnMenuUI;
                 }
                 m_Wrapper.m_UIActionsCallbackInterface = instance;
                 if (instance != null)
@@ -1150,6 +1268,12 @@ namespace PlayerControls
                     @TrackedDeviceOrientation.started += instance.OnTrackedDeviceOrientation;
                     @TrackedDeviceOrientation.performed += instance.OnTrackedDeviceOrientation;
                     @TrackedDeviceOrientation.canceled += instance.OnTrackedDeviceOrientation;
+                    @InventoryUI.started += instance.OnInventoryUI;
+                    @InventoryUI.performed += instance.OnInventoryUI;
+                    @InventoryUI.canceled += instance.OnInventoryUI;
+                    @MenuUI.started += instance.OnMenuUI;
+                    @MenuUI.performed += instance.OnMenuUI;
+                    @MenuUI.canceled += instance.OnMenuUI;
                 }
             }
         }
@@ -1195,7 +1319,7 @@ namespace PlayerControls
             void OnMove(InputAction.CallbackContext context);
             void OnLook(InputAction.CallbackContext context);
             void OnJump(InputAction.CallbackContext context);
-            void OnFire(InputAction.CallbackContext context);
+            void OnClick(InputAction.CallbackContext context);
             void OnPause(InputAction.CallbackContext context);
             void OnRun(InputAction.CallbackContext context);
             void OnInventory(InputAction.CallbackContext context);
@@ -1213,6 +1337,8 @@ namespace PlayerControls
             void OnRightClick(InputAction.CallbackContext context);
             void OnTrackedDevicePosition(InputAction.CallbackContext context);
             void OnTrackedDeviceOrientation(InputAction.CallbackContext context);
+            void OnInventoryUI(InputAction.CallbackContext context);
+            void OnMenuUI(InputAction.CallbackContext context);
         }
     }
 }

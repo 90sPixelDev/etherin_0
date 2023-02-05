@@ -6,17 +6,13 @@ using Unity.Netcode;
 public class PlayerNetworkVitals : NetworkBehaviour
 {
     [Header("Health")]
-    private const float MaxHealth = 100f;
-    public NetworkVariable<float> n_MaxHealth = new NetworkVariable<float>(MaxHealth);
-    //public NetworkVariable<float> currentHealth;
-    public NetworkVariable<float> n_CurrentHealth = new NetworkVariable<float>(default,
-        NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
+    public NetworkVariable<float> n_MaxHealth = new NetworkVariable<float>(100f, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
+    public NetworkVariable<float> n_Health = new NetworkVariable<float>(100f, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
     public TextMeshProUGUI healthPercentText;
     [Header("Stamina")]
-    private const float MaxStamina = 100f;
-    public NetworkVariable<float> n_MaxStamina = new NetworkVariable<float>(MaxHealth);
+    public NetworkVariable<float> n_MaxStamina = new NetworkVariable<float>(100f, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
     //public NetworkVariable<float> currentHealth;
-    public NetworkVariable<float> n_CurrentStamina = new NetworkVariable<float>(default,
+    public NetworkVariable<float> n_CurrentStamina = new NetworkVariable<float>(100f,
         NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
     public TextMeshProUGUI staminaPercentText;
     [Header("Food")]
@@ -68,13 +64,8 @@ public class PlayerNetworkVitals : NetworkBehaviour
 
     private void SetVitalsDefault()
     {
-        if (refsLoaded)
-        {
-            float healthPercent = n_CurrentHealth.Value / MaxHealth;
-            healthPercentText.text = healthPercent.ToString("P");
-
-            n_CurrentHealth = new NetworkVariable<float>(MaxHealth);
-        }
+        float healthPercent = n_Health.Value / n_MaxHealth.Value;
+        healthPercentText.text = healthPercent.ToString("P");
     }
 
     [ClientRpc]
@@ -84,25 +75,25 @@ public class PlayerNetworkVitals : NetworkBehaviour
         staminaBar = GameObject.FindGameObjectWithTag("CurrentStaminaBar").GetComponent<Image>();
         healthPercentText = GameObject.FindGameObjectWithTag("HealthPercentText").GetComponent<TextMeshProUGUI>();
         staminaPercentText = GameObject.FindGameObjectWithTag("StaminaPercentText").GetComponent<TextMeshProUGUI>();
-        refsLoaded = true;
         SetVitalsDefault();
     }
 
     //Function to update the health depending on damage received or healing taken
     public void EditHealth(float amt)
     {
+        Debug.Log($"Health changed by {amt}");
         //Add the amount that should be healed or damaged
-        n_CurrentHealth.Value += amt;
-        if (n_CurrentHealth.Value > MaxHealth)
-            n_CurrentHealth.Value = MaxHealth;
-        if (n_CurrentHealth.Value < 0f)
-            n_CurrentHealth.Value = 0f;
+        n_Health.Value += amt;
+        if (n_Health.Value > n_MaxHealth.Value)
+            n_Health.Value = n_MaxHealth.Value;
+        if (n_Health.Value < 0f)
+            n_Health.Value = 0f;
         //Convert the actual health to bar width
-        float barWidth = n_CurrentHealth.Value * barNumberAdjustment;
+        float barWidth = n_Health.Value * barNumberAdjustment;
         //Update the height of the health bar to current health
         healthBar.rectTransform.sizeDelta = new Vector2(barWidth, healthBar.rectTransform.sizeDelta.y);
         //Updating the health percent text to current health
-        float healthPercent = n_CurrentHealth.Value / MaxHealth;
+        float healthPercent = n_Health.Value / n_MaxHealth.Value;
         healthPercentText.text = healthPercent.ToString("P");
     }
 

@@ -22,8 +22,8 @@ public class MenuManager : MonoBehaviour
         //{
         //    playerNGO = NetworkManager.Singleton.LocalClient.PlayerObject;
         //}
-        mainMenuUI = gameObject.GetComponentInChildren<MenuButtons>().gameObject;
-        debugMenuUI = GameObject.Find("DebugMenuUI");
+        //mainMenuUI = gameObject.GetComponentInChildren<MenuButtons>().gameObject;
+        //debugMenuUI = GameObject.Find("DebugMenuUI");
         //inventoryUI.SetActive(false);
         //debugMenuUI.SetActive(false);
         //mainMenuUI.SetActive(false);
@@ -36,12 +36,12 @@ public class MenuManager : MonoBehaviour
         var playerNetState = playerGO.GetComponent<PlayerNetworkState>();
         Debug.Log(isMobile);
 
-        if (!playerNetState.inMainMenu.Value && !isMobile)
+        if (!playerNetState.n_inMainMenu.Value && !isMobile)
         {
             Cursor.lockState = CursorLockMode.None;
             pointerUI.SetActive(false);
             mainMenuUI.SetActive(true);
-            playerNetState.inMainMenu.Value = false;
+            playerNetState.n_inMainMenu.Value = false;
             Cursor.visible = true;
         }
         else
@@ -49,7 +49,7 @@ public class MenuManager : MonoBehaviour
             Cursor.lockState = CursorLockMode.Locked;
             pointerUI.SetActive(true);
             mainMenuUI.SetActive(false);
-            playerNetState.inMainMenu.Value = false;
+            playerNetState.n_inMainMenu.Value = false;
             Cursor.visible = false;
         }
     }
@@ -73,17 +73,17 @@ public class MenuManager : MonoBehaviour
         Debug.Log("Running on MenuManager!");
         var playerNetState = playerGO.GetComponent<PlayerNetworkState>();
 
-        if (!playerNetState.inMenu.Value)
+        if (!playerNetState.n_inMenu.Value)
         {
-            playerNetState.inMenu.Value = true;
+            playerNetState.n_inMenu.Value = true;
             inventoryUI.SetActive(true);
             pointerUI.SetActive(false);
             Cursor.lockState = CursorLockMode.None;
             Cursor.visible = true;
         }
-        else if (playerNetState.inMenu.Value)
+        else if (playerNetState.n_inMenu.Value)
         {
-            playerNetState.inMenu.Value = false;
+            playerNetState.n_inMenu.Value = false;
             inventoryUI.SetActive(false);
             pointerUI.SetActive(true);
             Cursor.lockState = CursorLockMode.Locked;

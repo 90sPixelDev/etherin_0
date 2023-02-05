@@ -1,6 +1,8 @@
-using System.Collections;
 using System.Collections.Generic;
+using System.Net;
+using TMPro;
 using Unity.Netcode;
+using Unity.Netcode.Transports.UTP;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -22,17 +24,36 @@ public class ProjectNetworkSceneManager : NetworkBehaviour
     private ClockTime clockTime;
     [SerializeField]
     private PlayerNetworkManager playerNetworkManager;
+    [SerializeField]
+    private TMP_InputField ipInputField;
 
     public override void OnNetworkSpawn()
     {
         var networkSceneManager = NetworkManager.Singleton.SceneManager;
         NetworkManager.Singleton.SceneManager.SetClientSynchronizationMode(LoadSceneMode.Single);
 
+        NetworkManager.Singleton.GetComponent<UnityTransport>().SetConnectionData(GetUserPublicIP(), (ushort)27007, ipInputField.text);
+
         if (IsServer && !string.IsNullOrEmpty(m_SceneName))
         {
             networkSceneManager.LoadScene(m_SceneName, LoadSceneMode.Single);
             networkSceneManager.OnSceneEvent += SetupPlayer;
         }
+    }
+
+    public override void OnNetworkDespawn()
+    {
+        var networkSceneManager = NetworkManager.Singleton.SceneManager;
+        networkSceneManager.OnSceneEvent -= SetupPlayer;
+    }
+
+    private string GetUserPublicIP()
+    {
+        string externalIpString = new WebClient().DownloadString("http://icanhazip.com").Replace("\\r\\n", "").Replace("\\n", "").Trim();
+        var externalIp = IPAddress.Parse(externalIpString);
+
+        Debug.Log($"Starting server with IP of:{externalIp}");
+        return externalIp.ToString();
     }
 
     private void SetupPlayer(SceneEvent sceneEvent)
@@ -58,6 +79,8 @@ public class ProjectNetworkSceneManager : NetworkBehaviour
 
         playerGO.GetComponent<CharacterControllerScript>().SetReferencesClientRPC(clientRpcParams);
         playerGO.GetComponent<PlayerNetworkVitals>().SetVitalsReferencesClientRPC(clientRpcParams);
+        playerGO.GetComponentInChildren<Billboard>().SetPlayerCamRefClientRpc();
+
         Debug.Log($"Refs are now set for Client:{client}!");
     }
 

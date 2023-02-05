@@ -16,6 +16,8 @@ TagManager:
   - StaminaPercentText
   - AllPlayerUI
   - PlayerInvUI
+  - PointerUI
+  - DebugMenuUI
   layers:
   - Default
   - TransparentFX
