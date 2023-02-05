@@ -5,8 +5,12 @@
 
 ## Features
 - [x] Display a better clock UI Day Night System
-- [x] Seasonal System
+- [ ] Seasonal System (A quarter done)
 - [ ] Live Weather
 - [ ] Skill System
-- [ ] Multiplayer System
-- [x] Equipment System
+- [ ] Quest System
+- [ ] Procedural Generated Maps
+- [ ] Varied Monsters per Biome
+- [ ] 8 Biome Minimum per "planet"
+- [x] Multiplayer System
+- [ ] Equipment System
