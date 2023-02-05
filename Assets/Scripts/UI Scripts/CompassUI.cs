@@ -1,21 +1,25 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class CompassUI : MonoBehaviour
+public class CompassUI : NetworkBehaviour
 {
     public RawImage compass;
-    public Transform player;
+    public NetworkObject localPlayer;
 
-    private void Awake()
+    private void Start()
     {
-        compass = GameObject.Find("NESW").GetComponent<RawImage>();
-        player = GameObject.Find("FPSPlayer").GetComponent<Transform>();
+        if (IsServer) return;
+
+        localPlayer = NetworkManager.Singleton.LocalClient.PlayerObject;
     }
 
     void Update()
     {
-        compass.uvRect = new Rect(player.localEulerAngles.y / 360f, 0, 1, 1);
+        if (IsServer) return;
+
+        compass.uvRect = new Rect(localPlayer.transform.localEulerAngles.y / 360f, 0, 1, 1);
     }
 }

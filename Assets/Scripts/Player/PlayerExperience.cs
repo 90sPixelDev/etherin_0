@@ -28,18 +28,18 @@ public class PlayerExperience : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        earnedEXPBar = GameObject.Find("FilledExpBar").GetComponent<Image>();
+        //earnedEXPBar = GameObject.Find("FilledExpBar").GetComponent<Image>();
 
-        float currentColor = (float)barWidth / (float)maxEXP;
+        //float currentColor = (float)barWidth / (float)maxEXP;
 
-        earnedEXP = 170f;
-        barWidth = earnedEXP;
+        //earnedEXP = 170f;
+        //barWidth = earnedEXP;
 
-        earnedEXPBar.rectTransform.sizeDelta = new Vector2(barWidth, earnedEXPBar.rectTransform.sizeDelta.y);
-        earnedEXPBar.color = Color.Lerp(startColor, endColor, currentColor);
+        //earnedEXPBar.rectTransform.sizeDelta = new Vector2(barWidth, earnedEXPBar.rectTransform.sizeDelta.y);
+        //earnedEXPBar.color = Color.Lerp(startColor, endColor, currentColor);
 
-        currentLevel = 1;
-        levelText.text = currentLevel.ToString();
+        //currentLevel = 1;
+        //levelText.text = currentLevel.ToString();
 
     }
 

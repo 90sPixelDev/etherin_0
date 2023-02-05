@@ -1,13 +1,12 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using System;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 
+//[ExecuteInEditMode]
 public class ClockTime : MonoBehaviour
 {
-
+    public bool isTimeRunning = false;
+    public Image hand;
     public Image clock;
     public TextMeshProUGUI gameHour;
     public TextMeshProUGUI gameMinute;
@@ -21,26 +20,30 @@ public class ClockTime : MonoBehaviour
     private DayNightCycle dayNightCycle;
 
     // Start is called before the first frame update
-    void Start()
+    private void Start()
     {
-        dayNightCycle = GameObject.Find("DayNightCycle").GetComponent<DayNightCycle>();
+        dayNightCycle = GameObject.Find("DayNightCycleNew").GetComponent<DayNightCycle>();
         clockCompletionTime = (dayNightCycle.targetDayLength * 60);
+        isTimeRunning = true;
     }
-
-    // Update is called once per frame
     void Update()
     {
-        ClockMovement();
-        CalculateGameTime();
-        UpdateGameDay();
+        if (isTimeRunning)
+        {
+            ClockMovement();
+            CalculateGameTime();
+            UpdateGameDay();
+        }
     }
 
     public void ClockMovement()
     {
-        clock.fillAmount -= 1 / clockCompletionTime * Time.deltaTime;
-        if (clock.fillAmount == 0)
+        var handZDegree = 0f;
+        handZDegree -= 30f * dayNightCycle.timeOfDay;
+        hand.transform.localEulerAngles = new Vector3(0, 0, handZDegree);
+        if (handZDegree == 360f)
         {
-            clock.fillAmount = 1;
+            handZDegree = 0f;
         }
         if (dayNightCycle.isNight)
             clock.color = new Color(0.7f, 0.7f, 1f, 0.7f);
@@ -50,11 +53,11 @@ public class ClockTime : MonoBehaviour
 
     public void CalculateGameTime()
     {
-        hour = (int)(dayNightCycle.timeOfDay / 0.083333333f); // 12 full count on clock (This is for 10 second day only)
-        minute = (int)(dayNightCycle.timeOfDay / 0.001388f ) % 60; // 720 full count on clock (This is for 10 second day only)
+        hour = (int)(dayNightCycle.timeOfDay);
+        minute = (int)((dayNightCycle.timeOfDay - Mathf.Floor(dayNightCycle.timeOfDay)) * 60);
 
         if (hour == 0)
-            hour = 12;
+            hour = 24;
         if (minute == 0)
             minute = 60;
 

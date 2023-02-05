@@ -3,12 +3,26 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 2
-  tags: []
+  tags:
+  - UIItemSlot
+  - Ground
+  - MainUI
+  - InventoryUI
+  - FPCam
+  - PlayerUI
+  - CurrentHealthBar
+  - CurrentStaminaBar
+  - HealthPercentText
+  - StaminaPercentText
+  - AllPlayerUI
+  - PlayerInvUI
+  - PointerUI
+  - DebugMenuUI
   layers:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - 
+  - Ground
   - Water
   - UI
   - 

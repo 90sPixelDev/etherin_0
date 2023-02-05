@@ -6,78 +6,57 @@ using UnityEngine.EventSystems;
 public class MenuManager : MonoBehaviour
 {
     public GameObject inventoryUI;
+    public GameObject mainMenuUI;
+    public GameObject debugMenuUI;
+    public GameObject pointerUI;
+
     public GameObject cameraGO;
     //public Transform contentWindow;
     //public SelectionManager SelectionManager;
 
-    public GameObject mainMenuUI;
-    public GameObject pointerUI;
-
-    public bool isPaused = false;
-    public bool inMenu = false;
 
     // Start is called before the first frame update
     void Start()
     {
-        Cursor.lockState = CursorLockMode.Locked;
-
-        inventoryUI.SetActive(false);
-        cameraGO = GameObject.Find("Camera");
-        //SelectionManager = GameObject.Find("GameManager").GetComponent<SelectionManager>();
+        //if (IsHost || IsClient)
+        //{
+        //    playerNGO = NetworkManager.Singleton.LocalClient.PlayerObject;
+        //}
+        //mainMenuUI = gameObject.GetComponentInChildren<MenuButtons>().gameObject;
+        //debugMenuUI = GameObject.Find("DebugMenuUI");
+        //inventoryUI.SetActive(false);
+        //debugMenuUI.SetActive(false);
+        //mainMenuUI.SetActive(false);
     }
 
-    // Update is called once per frame
-    void Update()
+    public void MainMenu(GameObject playerGO)
     {
-        if (Input.GetButtonDown("Cancel"))
-            MainMenu();
-        if (Input.GetButtonDown("Menu"))
-        {
-            Inventory();
-        }
+        Debug.Log("Running on MenuManager!");
+        var isMobile = playerGO.GetComponent<CharacterControllerScript>().canMove;
+        var playerNetState = playerGO.GetComponent<PlayerNetworkState>();
+        Debug.Log(isMobile);
 
-    }
-
-    public void MainMenu()
-    {
-        if (!isPaused)
+        if (!playerNetState.n_inMainMenu.Value && !isMobile)
         {
-            isPaused = true;
-            cameraGO.GetComponent<MouseLook>().enabled = false;
-            Time.timeScale = 0f;
             Cursor.lockState = CursorLockMode.None;
-            mainMenuUI.SetActive(true);
             pointerUI.SetActive(false);
-            inMenu = false;
-            inventoryUI.SetActive(false);
+            mainMenuUI.SetActive(true);
+            playerNetState.n_inMainMenu.Value = false;
             Cursor.visible = true;
         }
         else
         {
-            isPaused = false;
-            cameraGO.GetComponent<MouseLook>().enabled = true;
-            Time.timeScale = 1f;
             Cursor.lockState = CursorLockMode.Locked;
-            mainMenuUI.SetActive(false);
             pointerUI.SetActive(true);
+            mainMenuUI.SetActive(false);
+            playerNetState.n_inMainMenu.Value = false;
             Cursor.visible = false;
         }
     }
 
-    public void PauseGame()
-    {
-        //INCORPORTATE A METHOD TO FREEZE GAME TIME AND SHOW CURSOR
-    }
-
     public void ResumeButton()
     {
-        isPaused = false;
-        cameraGO.GetComponent<MouseLook>().enabled = true;
-        Time.timeScale = 1f;
-        Cursor.lockState = CursorLockMode.Locked;
-        mainMenuUI.SetActive(false);
-        pointerUI.SetActive(true);
-        Cursor.visible = false;
+        //MainMenu();
     }
     public void OptionsButton()
     {
@@ -85,28 +64,28 @@ public class MenuManager : MonoBehaviour
     }
     public void QuitButton()
     {
-        Application.Quit();
+        //if (!IsOwner) return;
+        //Application.Quit();
     }
 
-    public void Inventory()
+    public void Inventory(GameObject playerGO)
     {
-        if (isPaused)
-            return;
-        if (!inMenu)
+        Debug.Log("Running on MenuManager!");
+        var playerNetState = playerGO.GetComponent<PlayerNetworkState>();
+
+        if (!playerNetState.n_inMenu.Value)
         {
-            inMenu = true;
+            playerNetState.n_inMenu.Value = true;
             inventoryUI.SetActive(true);
             pointerUI.SetActive(false);
-            cameraGO.GetComponent<MouseLook>().enabled = false;
             Cursor.lockState = CursorLockMode.None;
             Cursor.visible = true;
         }
-        else if (inMenu)
+        else if (playerNetState.n_inMenu.Value)
         {
-            inMenu = false;
+            playerNetState.n_inMenu.Value = false;
             inventoryUI.SetActive(false);
             pointerUI.SetActive(true);
-            cameraGO.GetComponent<MouseLook>().enabled = true;
             Cursor.lockState = CursorLockMode.Locked;
             Cursor.visible = false;
         }

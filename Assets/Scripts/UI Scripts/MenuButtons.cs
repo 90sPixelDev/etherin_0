@@ -1,31 +1,21 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using Unity.Netcode;
 using UnityEngine;
 
-public class MenuButtons : MonoBehaviour
+public class MenuButtons : NetworkBehaviour
 {
-    public MenuManager MenuManager;
+    public MenuManager menuManager;
 
     // Start is called before the first frame update
     void Start()
     {
-        MenuManager = GameObject.Find("UICanvas").GetComponent<MenuManager>();
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-
+        menuManager = GameObject.Find("UICanvas").GetComponent<MenuManager>();
     }
 
     public void ResumeButton()
     {
-        MenuManager.isPaused = false;
-        MenuManager.cameraGO.GetComponent<MouseLook>().enabled = true;
-        UnityEngine.Time.timeScale = 1f;
-        Cursor.lockState = CursorLockMode.Locked;
-        MenuManager.mainMenuUI.SetActive(false);
-        MenuManager.pointerUI.SetActive(true);
+        menuManager.ResumeButton();
     }
     public void OptionsButton()
     {
@@ -33,6 +23,7 @@ public class MenuButtons : MonoBehaviour
     }
     public void QuitButton()
     {
+        NetworkManager.Shutdown();
         Application.Quit();
     }
 }

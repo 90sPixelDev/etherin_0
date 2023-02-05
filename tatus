@@ -1,0 +1,59 @@
+[33mcommit 951662e6fef33e540bdbee14172f71b32428aa4f[m[33m ([m[1;36mHEAD -> [m[1;32mdev[m[33m, [m[1;31morigin/dev[m[33m)[m
+Author: 90sPixelDev <fontlien@gmail.com>
+Date:   Wed Feb 1 04:37:03 2023 -0500
+
+    All clients can now open or close their inventory menu or main menu as wanted, host has issue with de-activating the menus quicker than the level loads - need to incorporate fix
+
+[33mcommit 4015288dc03a4dfc8679d9acfbad4933e7a63b8e[m
+Author: 90sPixelDev <fontlien@gmail.com>
+Date:   Wed Feb 1 04:00:02 2023 -0500
+
+    UI Now is fully reference by a character who has joined into the game, incorporating opening and closing menus now by each player
+
+[33mcommit b9f427ad1f3181ab896a2ec45ce61758220e7f82[m
+Author: 90sPixelDev <fontlien@gmail.com>
+Date:   Mon Jan 30 23:10:38 2023 -0500
+
+    Manually pairing and assigning control scheme to 2nd player for quick fix for further development, Unity's InputSystem is either buggy or I am not correctly setting up the new InputSystem, moving onto UI control for each player
+
+[33mcommit 67749b8362bcea4007eb86001acfa2bcd3a33674[m
+Author: 90sPixelDev <fontlien@gmail.com>
+Date:   Mon Jan 30 21:39:50 2023 -0500
+
+    Added working multiplayer controls for client 1 | ParrylSync clones seem to create clients with a 'touchscreen' input system | Testing with build now
+
+[33mcommit 7047583a6b34e39227a7a9778c8e3cff33ac3d30[m
+Author: 90sPixelDev <fontlien@gmail.com>
+Date:   Wed Jan 25 19:31:44 2023 -0500
+
+    Simplified process for starting multiplayer game | Will decide on Server wwnership authorization for network managment | Added simple simple plane to start in and disabled all ui atm till ownership is handled
+
+[33mcommit ff091bb052da6f272346816897cafd84b16905cd[m
+Author: 90sPixelDev <fontlien@gmail.com>
+Date:   Fri Dec 16 20:38:26 2022 -0500
+
+    Setting up system for player to teleport to new scene and be able to hide/unhide main menu and inventory, (Player teleportation on spawn is still wonky and works about 50% of the time - needs to be further developed)
+
+[33mcommit 885296038e6dab02d73a389a05efa5a8aceefc44[m
+Author: 90sPixelDev <fontlien@gmail.com>
+Date:   Wed Dec 14 15:19:10 2022 -0500
+
+    Fixed lighting to work correctly and not darken entirely, changed to terrain, starting to add player control when joining a host's game
+
+[33mcommit 9bbcfaf45ad97eb792f8c11a8c7a75b3b3716167[m
+Author: 90sPixelDev <fontlien@gmail.com>
+Date:   Sun Dec 11 03:13:34 2022 -0500
+
+    Added a lot of the UI for when player spawns as well as a main menu to start game before chossing to host or join client as well as quit game (Single player will be last thing to add)
+
+[33mcommit d4e07f72b2dcbde8db2b80da8c023ca5eea9dee8[m[33m ([m[1;32mmain[m[33m)[m
+Author: 90sPixelDev <fontlien@gmail.com>
+Date:   Sat Dec 10 20:50:48 2022 -0500
+
+    Project setup with FPSPlayer and DayNightCycle (Complete darkness at night)
+
+[33mcommit cde9319569f21129ad89f0045ccced52e3530362[m
+Author: Lien Font <fontlien@gmail.com>
+Date:   Sat Dec 10 20:38:11 2022 -0500
+
+    Initial commit
