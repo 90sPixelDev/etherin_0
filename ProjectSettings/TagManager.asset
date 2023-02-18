@@ -18,6 +18,7 @@ TagManager:
   - PlayerInvUI
   - PointerUI
   - DebugMenuUI
+  - MouseContainer
   layers:
   - Default
   - TransparentFX

@@ -1,34 +1,28 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using Unity.Netcode;
+using Unity.Services.Authentication;
 using UnityEngine;
-using UnityEngine.EventSystems;
 
-public class MenuManager : MonoBehaviour
+public class MenuManager : NetworkBehaviour
 {
+    [Header("Menus")]
     public GameObject inventoryUI;
     public GameObject mainMenuUI;
     public GameObject debugMenuUI;
     public GameObject pointerUI;
-
+    [Header("Player")]
+    public GameObject playerNGO;
+    [Header("Other")]
     public GameObject cameraGO;
-    //public Transform contentWindow;
-    //public SelectionManager SelectionManager;
 
-
-    // Start is called before the first frame update
     void Start()
     {
-        //if (IsHost || IsClient)
-        //{
-        //    playerNGO = NetworkManager.Singleton.LocalClient.PlayerObject;
-        //}
+
         //mainMenuUI = gameObject.GetComponentInChildren<MenuButtons>().gameObject;
         //debugMenuUI = GameObject.Find("DebugMenuUI");
         //inventoryUI.SetActive(false);
         //debugMenuUI.SetActive(false);
         //mainMenuUI.SetActive(false);
     }
-
     public void MainMenu(GameObject playerGO)
     {
         Debug.Log("Running on MenuManager!");

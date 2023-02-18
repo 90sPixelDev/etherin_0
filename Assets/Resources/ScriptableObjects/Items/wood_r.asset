@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6e1f3ec637d044f4c8ccfaf98bbaeef2, type: 3}
+  m_Name: wood_r
+  m_EditorClassIdentifier: 
+  itemType: 1
+  itemName: Wood
+  itemIcon: {fileID: 21300000, guid: 0074314e79c3fc64ba7fefa9ea8cb33e, type: 3}
+  itemPrefab: {fileID: 0}
+  itemDescription: Wood resource to craft, build or use to your needs.
+  itemValue: 0
+  maxStack: 9999
+  maxCondition: -1
+  resourceType: 1
