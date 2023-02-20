@@ -1,40 +1,99 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class UIItemSlot : MonoBehaviour
 {
-    //public bool isCursor = false;
 
-    //public RectTransform slotRect;
-    //public Image icon;
-    //public TextMeshProUGUI amount;
-    //public Image condition;
-
+    [Header("Item Info")]
     public ItemSlot itemSlot;
-    public ItemSlot pointerItemSlot;
 
-    [SerializeField] Button btn;
+    [Header("Item Info References")]
+    public TextMeshProUGUI amtText;
+    public Image conditionBar;
+
+    [Header("UI Refs")]
+    public Image icon;
+    public RectTransform slotRect;
+    public Button slotButton;
+
+    [Header("Pointer")]
+    public bool isCursor = false;
+    public InventoryClickHandler invClickHandler;
 
     private void OnEnable()
     {
-        btn = GetComponent<Button>();
-        btn.onClick.AddListener(() => SwitchItemSlots(pointerItemSlot, itemSlot));
+        invClickHandler = GameObject.FindGameObjectWithTag("AllPlayerUI").GetComponent<InventoryClickHandler>();
+
+        if (isCursor) return;
+        slotButton = GetComponent<Button>();
+        slotButton.onClick.AddListener(() => invClickHandler.ProcessClick(this));
     }
 
-    private void Start()
+    private void Awake()
     {
-        itemSlot = GetComponentInChildren<ItemSlot>();
-        pointerItemSlot = GameObject.FindGameObjectWithTag("MouseContainer").GetComponent<ItemSlot>();
+        //itemSlot = new ItemSlot();
+        //itemSlot.AttachUI(this);
     }
 
-    public void SwitchItemSlots(ItemSlot itemSlot_a, ItemSlot itemSlot_b)
+    // VISUAL UPDATES
+    public void RefreshSlot()
     {
-        Debug.Log("Switching!");
+        UpdateAmount();
+        UpdateIcon();
+        UpdateConditionBar();
+    }
+    public void ClearSlot()
+    {
+        itemSlot = null;
+        RefreshSlot();
+    }
 
-        itemSlot_a.item = itemSlot_b.item;
-        itemSlot_a.UpdateItemInfo();
+
+    public void UpdateIcon()
+    {
+        if (itemSlot == null || !itemSlot.hasItem)
+            icon.enabled = false;
+        else
+        {
+            icon.enabled = true;
+            icon.sprite = itemSlot.item.itemIcon;
+        }
+    }
+
+    public void UpdateAmount()
+    {
+        if (itemSlot == null || !itemSlot.hasItem || itemSlot.itemAmount < 2)
+            amtText.enabled = false;
+        else
+        {
+            amtText.enabled = true;
+            amtText.text = itemSlot.itemAmount.ToString();
+        }
+    }
+
+    private void UpdateConditionBar()
+    {
+        if (itemSlot == null || !itemSlot.hasItem || !itemSlot.item.isDegradable)
+            conditionBar.enabled = false;
+        else
+        {
+            conditionBar.enabled = true;
+
+            //Get normalized percentage
+            float conditionPercent = (float)itemSlot.itemCondition / (float)itemSlot.item.maxCondition;
+
+            float barWidth = slotRect.rect.width * conditionPercent;
+
+            conditionBar.rectTransform.sizeDelta = new Vector2(barWidth - 15, conditionBar.rectTransform.sizeDelta.y);
+
+            //Lerp condition bar from red to green (Change to be tier based in the future)
+            conditionBar.color = Color.Lerp(Color.red, Color.green, conditionPercent);
+        }
+
     }
 
 

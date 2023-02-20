@@ -9,14 +9,13 @@ public class MouseItemPos : MonoBehaviour
 
     void Start()
     {
-        mouseItemSlot = GetComponent<ItemSlot>();
+        mouseItemSlot = GetComponent<UIItemSlot>().itemSlot;
     }
 
     void LateUpdate()
     {
         if (mouseItemSlot.item)
         {
-            Debug.Log("Has Item!");
             transform.GetComponent<RectTransform>().position = Mouse.current.position.ReadValue();
         }
     }
