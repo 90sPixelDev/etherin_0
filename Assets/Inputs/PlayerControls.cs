@@ -76,7 +76,7 @@ namespace PlayerControls
                 },
                 {
                     ""name"": ""Run"",
-                    ""type"": ""Button"",
+                    ""type"": ""PassThrough"",
                     ""id"": ""46a12602-04c2-4525-9c8a-4ee2f7c69683"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",

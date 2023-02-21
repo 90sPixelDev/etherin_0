@@ -20,7 +20,7 @@ public class DayNightCycle : NetworkBehaviour
 
     [SerializeField]
     [Range(0f, 24f)]
-    private NetworkVariable<float> _timeOfDay = new NetworkVariable<float>(0f, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Server);
+    private NetworkVariable<float> _timeOfDay = new NetworkVariable<float>(0f, NetworkVariableReadPermission.Everyone);
     public float timeOfDay
     {
         get
@@ -59,7 +59,7 @@ public class DayNightCycle : NetworkBehaviour
             return _yearLength;
         }
     }
-    public bool pause = false;
+    public bool pauseTime = false;
 
     [Header("Sun Light")]
     [SerializeField]
@@ -96,12 +96,15 @@ public class DayNightCycle : NetworkBehaviour
             sunRotation = GameObject.Find("Sun Rotation").GetComponent<Transform>();
             moonRotation = GameObject.Find("Moon Rotation").GetComponent<Transform>();
             sun = GameObject.Find("Sun").GetComponent<Light>();
+
+            // Temp Set of time for Debugging/Testing
+            _timeOfDay.Value = 13f;
         }
     }
 
     private void Update()
     {
-        if (!pause && IsServer)
+        if (!pauseTime && IsServer)
         {
             UpdateTimeScale();
             UpdateTime();
@@ -126,6 +129,13 @@ public class DayNightCycle : NetworkBehaviour
             sun = GameObject.Find("Sun").GetComponent<Light>();
 
             _timeOfDay.OnValueChanged += UpdateTimeForClients;
+        }
+    }
+    public override void OnNetworkDespawn()
+    {
+        if (IsClient)
+        {
+            _timeOfDay.OnValueChanged -= UpdateTimeForClients;
         }
     }
 

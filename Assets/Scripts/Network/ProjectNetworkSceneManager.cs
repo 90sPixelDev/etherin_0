@@ -29,10 +29,21 @@ public class ProjectNetworkSceneManager : NetworkBehaviour
 
     public override void OnNetworkSpawn()
     {
-        var networkSceneManager = NetworkManager.Singleton.SceneManager;
+        base.OnNetworkSpawn();
+
+        var netManager = NetworkManager.Singleton;
+        var networkSceneManager = netManager.SceneManager;
         NetworkManager.Singleton.SceneManager.SetClientSynchronizationMode(LoadSceneMode.Single);
 
-        NetworkManager.Singleton.GetComponent<UnityTransport>().SetConnectionData(GetUserPublicIP(), (ushort)27007, ipInputField.text);
+        if (IsServer)
+        {
+            Debug.Log($"Starting Server with IP of:{netManager.GetComponent<UnityTransport>().ConnectionData.Address}");
+        }
+        if (IsClient)
+        {
+            Debug.Log($"Connecting to Server with IP of: {netManager.GetComponent<UnityTransport>().ConnectionData.ServerListenAddress}");
+            Debug.Log($"Server IP:{netManager.GetComponent<UnityTransport>().ConnectionData.Address}");
+        }
 
         if (IsServer && !string.IsNullOrEmpty(m_SceneName))
         {
@@ -43,8 +54,20 @@ public class ProjectNetworkSceneManager : NetworkBehaviour
 
     public override void OnNetworkDespawn()
     {
+        base.OnNetworkDespawn();
+
         var networkSceneManager = NetworkManager.Singleton.SceneManager;
         networkSceneManager.OnSceneEvent -= SetupPlayer;
+    }
+
+    public void UpdateListenIP(string newText)
+    {
+        ipInputField.text = newText;
+    }
+
+    public void SetNetworkConfig()
+    {
+        NetworkManager.Singleton.GetComponent<UnityTransport>().SetConnectionData(GetUserPublicIP(), (ushort)27007, ipInputField.text);
     }
 
     private string GetUserPublicIP()
@@ -52,7 +75,6 @@ public class ProjectNetworkSceneManager : NetworkBehaviour
         string externalIpString = new WebClient().DownloadString("http://icanhazip.com").Replace("\\r\\n", "").Replace("\\n", "").Trim();
         var externalIp = IPAddress.Parse(externalIpString);
 
-        Debug.Log($"Starting server with IP of:{externalIp}");
         return externalIp.ToString();
     }
 
@@ -79,7 +101,10 @@ public class ProjectNetworkSceneManager : NetworkBehaviour
 
         playerGO.GetComponent<CharacterControllerScript>().SetReferencesClientRPC(clientRpcParams);
         playerGO.GetComponent<PlayerNetworkVitals>().SetVitalsReferencesClientRPC(clientRpcParams);
-        playerGO.GetComponentInChildren<Billboard>().SetPlayerCamRefClientRpc();
+        playerGO.GetComponentInChildren<PlayerInventory>().SetInventoryReferenceClientRpc();
+        playerGO.GetComponentInChildren<PlayerTag>().SetPlayerCamRefClientRpc();
+
+        playerGO.GetComponentInChildren<PlayerTag>().UpdatePlayerTagVarServerRpc();
 
         Debug.Log($"Refs are now set for Client:{client}!");
     }

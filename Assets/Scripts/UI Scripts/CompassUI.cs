@@ -11,15 +11,19 @@ public class CompassUI : NetworkBehaviour
 
     private void Start()
     {
-        if (IsServer) return;
+        if (IsHost || IsClient)
+        {
+            localPlayer = NetworkManager.Singleton.LocalClient.PlayerObject;
+        }
 
-        localPlayer = NetworkManager.Singleton.LocalClient.PlayerObject;
     }
 
     void Update()
     {
-        if (IsServer) return;
+        if (IsHost || IsClient)
+        {
+            compass.uvRect = new Rect(localPlayer.transform.localEulerAngles.y / 360f, 0, 1, 1);
+        }
 
-        compass.uvRect = new Rect(localPlayer.transform.localEulerAngles.y / 360f, 0, 1, 1);
     }
 }

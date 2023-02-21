@@ -9,18 +9,31 @@ using UnityEngine.EventSystems;
 [RequireComponent(typeof(ClientNetworkTransform))]
 public class CharacterControllerScript : NetworkBehaviour
 {
+    public enum PlayerAnimState
+    {
+        IDLE,
+        WALK,
+        WALK_REVERSE,
+        WALK_LEFT,
+        WALK_RIGHT
+    }
+
     [SerializeField] private CharacterController charaController;
     [SerializeField] private PlayerInput playerInput;
     [SerializeField] private string currControlScheme;
     [SerializeField] private InputDevice currDevice;
     [SerializeField] private PlayerNetworkVitals playerNetworkVitals;
     [SerializeField] private PlayerNetworkState playerNetworkState;
+    [SerializeField] private Animator animator;
+    [SerializeField] private PlayerTag playerTag;
     float xRotation, yRotation;
 
     [Header("Player Movement Speeds")]
-    [SerializeField] private float currentSpeed = 12f;
-    [SerializeField] private float walkSpeed = 12f;
-    [SerializeField] private float runSpeed = 18f;
+    [SerializeField] private float currentSpeed;
+    [SerializeField] private float walkSpeed;
+    [SerializeField] private float runSpeed;
+    [SerializeField]
+    private NetworkVariable<PlayerAnimState> netAnimState = new NetworkVariable<PlayerAnimState>(PlayerAnimState.IDLE, NetworkVariableReadPermission.Owner, NetworkVariableWritePermission.Owner);
     [Header("Gravity Force")]
     [SerializeField] private float gravity = -9.81f;
     Vector3 velocity;
@@ -57,7 +70,6 @@ public class CharacterControllerScript : NetworkBehaviour
 
     [Header("DEBUG")]
     [SerializeField] GameObject testObject;
-    [SerializeField] public string testString = "TESTER!";
 
 
     private void Awake()
@@ -66,6 +78,7 @@ public class CharacterControllerScript : NetworkBehaviour
         playerNetworkVitals = GetComponent<PlayerNetworkVitals>();
         playerNetworkState = GetComponent<PlayerNetworkState>();
         playerInput = GetComponent<PlayerInput>();
+        animator = GetComponentInChildren<Animator>();
     }
 
     public override void OnNetworkSpawn()
@@ -81,14 +94,6 @@ public class CharacterControllerScript : NetworkBehaviour
 
         playerInput.enabled = true;
         charaController.enabled = true;
-    }
-
-    private void DisableNonLocalPairing(PlayerInput plyInput)
-    {
-        if (IsOwner)
-        {
-            Debug.Log("testing");
-        }
     }
 
     private void Start()
@@ -148,6 +153,11 @@ public class CharacterControllerScript : NetworkBehaviour
             }
             charaController.Move(velocity * Time.deltaTime);
 
+            if (IsClient)
+            {
+                ClientAnimVisualsServerRpc();
+            }
+
             //To configure to run when holding "run"
             //if (Input.GetButton("Run") && PlayerVitals.currentStamina > 1f)
             //{
@@ -184,6 +194,7 @@ public class CharacterControllerScript : NetworkBehaviour
         if (keyboard == null) return;
 
         moveInput = ctx.ReadValue<Vector2>();
+        
     }
 
     public void PlayerMove()
@@ -194,6 +205,72 @@ public class CharacterControllerScript : NetworkBehaviour
         moveDirection.x = moveInput.x;
         moveDirection.z = moveInput.y;
         charaController.Move(transform.TransformDirection(moveDirection) * currentSpeed * Time.deltaTime);
+
+        if (moveInput.y > 0)
+        {
+            netAnimState.Value = PlayerAnimState.WALK;
+        }
+        else if (moveInput.x < 0)
+        {
+            netAnimState.Value = PlayerAnimState.WALK_LEFT;
+        }
+        else if (moveInput.x > 0)
+        {
+            netAnimState.Value = PlayerAnimState.WALK_RIGHT;
+        }
+        else if (moveInput.y < 0 && moveInput.x < 0)
+        {
+            netAnimState.Value = PlayerAnimState.WALK_REVERSE;
+        }
+        else if (moveInput.y > 0 && moveInput.x > 0)
+        {
+            netAnimState.Value = PlayerAnimState.WALK;
+        }
+        else if (moveInput.y < 0)
+        {
+            netAnimState.Value = PlayerAnimState.WALK_REVERSE;
+        }
+        else
+        {
+            netAnimState.Value = PlayerAnimState.IDLE;
+        }
+    }
+
+    public void AnimVisuals()
+    {
+        if (netAnimState.Value == PlayerAnimState.WALK)
+        {
+            animator.SetFloat("DirectionY", 1f);
+            animator.SetFloat("DirectionX", 0f);
+        }
+        else if (netAnimState.Value == PlayerAnimState.IDLE)
+        {
+            animator.SetFloat("DirectionY", 0f);
+            animator.SetFloat("DirectionX", 0f);
+        }
+        else if (netAnimState.Value == PlayerAnimState.WALK_REVERSE)
+        {
+            animator.SetFloat("DirectionY", -1f);
+            animator.SetFloat("DirectionX", 0f);
+        }
+        else if (netAnimState.Value == PlayerAnimState.WALK_LEFT)
+        {
+            animator.SetFloat("DirectionX", -1f);
+            animator.SetFloat("DirectionY", 0f);
+
+        }
+        else if (netAnimState.Value == PlayerAnimState.WALK_RIGHT)
+        {
+            animator.SetFloat("DirectionX", 1f);
+            animator.SetFloat("DirectionY", 0f);
+        }
+    }
+
+
+    [ServerRpc]
+    public void ClientAnimVisualsServerRpc()
+    {
+        AnimVisuals();
     }
 
     public void CheckIfOnGround()
@@ -227,7 +304,6 @@ public class CharacterControllerScript : NetworkBehaviour
     public void PlayerLook()
     {
         if (!refsLoaded && !IsOwner) return;
-        Cursor.lockState = CursorLockMode.Locked;
 
         int lookSensitivity = 15;
 
@@ -284,10 +360,10 @@ public class CharacterControllerScript : NetworkBehaviour
         }
 
         // Turning on Inventory
-        if (!playerNetworkState.n_inMenu.Value && canLook && canMove)
+        if (!playerNetworkState.n_inMenu.Value)
         {
-            canLook = false;
             playerNetworkState.n_inMenu.Value = true;
+            playerTag.SetPlayerTagInMenuServerRpc();
             playerInvMenuUI.SetActive(true);
             pointerUI.SetActive(false);
             Cursor.lockState = CursorLockMode.None;
@@ -299,10 +375,10 @@ public class CharacterControllerScript : NetworkBehaviour
             EventSystem.current.SetSelectedGameObject(playerInvMenuFirstSelect);
         }
         // Turning off Inventory
-        else if (playerNetworkState.n_inMenu.Value && !canLook)
+        else if (playerNetworkState.n_inMenu.Value)
         {
-            canLook = true;
             playerNetworkState.n_inMenu.Value = false;
+            playerTag.UpdatePlayerTagVarServerRpc();
             playerInvMenuUI.SetActive(false);
             pointerUI.SetActive(true);
             Cursor.lockState = CursorLockMode.Locked;
@@ -322,11 +398,10 @@ public class CharacterControllerScript : NetworkBehaviour
         }
 
         // Turning on Menu
-        if (!playerNetworkState.n_inMainMenu.Value && canMove && canLook)
+        if (!playerNetworkState.n_inMainMenu.Value)
         {
-            canMove = false;
-            canLook = false;
             Cursor.lockState = CursorLockMode.None;
+            playerTag.SetPlayerTagInMenuServerRpc();
             pointerUI.SetActive(false);
             mainMenuUI.SetActive(true);
             playerNetworkState.n_inMainMenu.Value = true;
@@ -337,11 +412,10 @@ public class CharacterControllerScript : NetworkBehaviour
             EventSystem.current.SetSelectedGameObject(mainMenuFirstSelect);
         }
         // Turning off Menu
-        else if (playerNetworkState.n_inMainMenu.Value && !canMove && !canLook)
+        else if (playerNetworkState.n_inMainMenu.Value)
         {
-            canMove = true;
-            canLook = true;
             Cursor.lockState = CursorLockMode.Locked;
+            playerTag.UpdatePlayerTagVarServerRpc();
             pointerUI.SetActive(true);
             mainMenuUI.SetActive(false);
             playerNetworkState.n_inMainMenu.Value = false;
