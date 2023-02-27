@@ -60,7 +60,7 @@ public class PlayerInventory : NetworkBehaviour
             if (playerItems[i].hasItem && playerItems[i].item.maxStack >
                 playerItems[i].itemAmount && playerItems[i].item == _itemObject)
             {
-                Debug.Log("Item added to current amount in player's inventory!");
+                Debug.Log("WorldItem added to current amount in player's inventory!");
                 playerItems[i].itemAmount += _amount;
                 itemWasAdded = true;
                 return itemWasAdded;
@@ -74,7 +74,7 @@ public class PlayerInventory : NetworkBehaviour
                 //OTHERWISE IF THERE ISN'T THE SAME ITEM IN THE INVENTORY BUT THERE IS AN EMPTY SLOT ADD THE ITEM TO THE PLAYER'S INVENTORY
                 if (!playerItems[i].hasItem)
                 {
-                    Debug.Log("New Item added!");
+                    Debug.Log("New WorldItem added!");
                     playerItems[i].item = _itemObject;
                     playerItems[i].itemCondition = _itemObject.maxCondition;
                     var amtAdded = (_amount + playerItems[i].itemAmount > playerItems[i].item.maxStack) ? playerItems[i].itemAmount = playerItems[i].item.maxStack : playerItems[i].itemAmount = _amount;

@@ -100,6 +100,15 @@ namespace PlayerControls
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""Interact"",
+                    ""type"": ""Button"",
+                    ""id"": ""c78dbeaf-111f-48cc-83b0-995685e3cf25"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -359,7 +368,7 @@ namespace PlayerControls
                 {
                     ""name"": """",
                     ""id"": ""8816b606-307b-4c92-b057-c0af2a0eb049"",
-                    ""path"": ""<Gamepad>/buttonWest"",
+                    ""path"": ""<Gamepad>/buttonNorth"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Gamepad"",
@@ -375,6 +384,28 @@ namespace PlayerControls
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""Debug"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""ad8e7b88-8976-4a8f-ba22-4fe165aa6ed4"",
+                    ""path"": ""<Keyboard>/e"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard&Mouse"",
+                    ""action"": ""Interact"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""138ceb04-92bf-4d5b-9d8f-19f0ef1bb187"",
+                    ""path"": ""<Gamepad>/buttonEast"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Gamepad"",
+                    ""action"": ""Interact"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -999,6 +1030,7 @@ namespace PlayerControls
             m_Player_Run = m_Player.FindAction("Run", throwIfNotFound: true);
             m_Player_Inventory = m_Player.FindAction("Inventory", throwIfNotFound: true);
             m_Player_Debug = m_Player.FindAction("Debug", throwIfNotFound: true);
+            m_Player_Interact = m_Player.FindAction("Interact", throwIfNotFound: true);
             // UI
             m_UI = asset.FindActionMap("UI", throwIfNotFound: true);
             m_UI_Navigate = m_UI.FindAction("Navigate", throwIfNotFound: true);
@@ -1080,6 +1112,7 @@ namespace PlayerControls
         private readonly InputAction m_Player_Run;
         private readonly InputAction m_Player_Inventory;
         private readonly InputAction m_Player_Debug;
+        private readonly InputAction m_Player_Interact;
         public struct PlayerActions
         {
             private @Player_Controls_Input m_Wrapper;
@@ -1092,6 +1125,7 @@ namespace PlayerControls
             public InputAction @Run => m_Wrapper.m_Player_Run;
             public InputAction @Inventory => m_Wrapper.m_Player_Inventory;
             public InputAction @Debug => m_Wrapper.m_Player_Debug;
+            public InputAction @Interact => m_Wrapper.m_Player_Interact;
             public InputActionMap Get() { return m_Wrapper.m_Player; }
             public void Enable() { Get().Enable(); }
             public void Disable() { Get().Disable(); }
@@ -1125,6 +1159,9 @@ namespace PlayerControls
                     @Debug.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnDebug;
                     @Debug.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnDebug;
                     @Debug.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnDebug;
+                    @Interact.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnInteract;
+                    @Interact.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnInteract;
+                    @Interact.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnInteract;
                 }
                 m_Wrapper.m_PlayerActionsCallbackInterface = instance;
                 if (instance != null)
@@ -1153,6 +1190,9 @@ namespace PlayerControls
                     @Debug.started += instance.OnDebug;
                     @Debug.performed += instance.OnDebug;
                     @Debug.canceled += instance.OnDebug;
+                    @Interact.started += instance.OnInteract;
+                    @Interact.performed += instance.OnInteract;
+                    @Interact.canceled += instance.OnInteract;
                 }
             }
         }
@@ -1324,6 +1364,7 @@ namespace PlayerControls
             void OnRun(InputAction.CallbackContext context);
             void OnInventory(InputAction.CallbackContext context);
             void OnDebug(InputAction.CallbackContext context);
+            void OnInteract(InputAction.CallbackContext context);
         }
         public interface IUIActions
         {

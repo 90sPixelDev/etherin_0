@@ -10,8 +10,9 @@ public class PlayerNetworkVitals : NetworkBehaviour
     public NetworkVariable<float> n_Health = new NetworkVariable<float>(100f, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
     public TextMeshProUGUI healthPercentText;
     [Header("Stamina")]
+    [SerializeField]
     public NetworkVariable<float> n_MaxStamina = new NetworkVariable<float>(100f, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
-    //public NetworkVariable<float> currentHealth;
+    [SerializeField]
     public NetworkVariable<float> n_CurrentStamina = new NetworkVariable<float>(100f,
         NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
     public TextMeshProUGUI staminaPercentText;
@@ -40,32 +41,15 @@ public class PlayerNetworkVitals : NetworkBehaviour
     void Start()
     {
         characterControllerScript = GetComponent<CharacterControllerScript>();
-
-        ////Setting max Stamina
-        //maxStamina = 100f;
-        ////Setting current Stamina to max Stamina in case of errors
-        //currentStamina = maxStamina;
-        ////Setting the stamina percent text to the current stamina of player at start
-        //staminaPercentText.text = staminaPercent.ToString("P");
-        ////Convert the actual health to bar width
-        //float barWidth = currentHealth * barNumberAdjustment;
-        ////Setting the size of the healthbar so no issues from start
-        //healthBar.rectTransform.sizeDelta = new Vector2(barWidth, healthBar.rectTransform.sizeDelta.y);
-        ////Setting the color of the health bar correctly from start
-        //Color fullHealthColor = new Color(0.502f, 0f, 0.0112f, 1f);
-        //healthBar.color = fullHealthColor;
-
-        ////setting max Food
-        //currentFood = 100f;
-        //float needsBarAdj = currentFood * needsBarNumberAdjustment;
-        //foodBar.rectTransform.sizeDelta = new Vector2(foodBar.rectTransform.sizeDelta.x, needsBarAdj);
-
     }
 
     private void SetVitalsDefault()
     {
         float healthPercent = n_Health.Value / n_MaxHealth.Value;
         healthPercentText.text = healthPercent.ToString("P");
+
+        float staminaPercent = n_CurrentStamina.Value / n_MaxStamina.Value;
+        staminaPercentText.text = staminaPercent.ToString("P");
     }
 
     [ClientRpc]
@@ -76,6 +60,7 @@ public class PlayerNetworkVitals : NetworkBehaviour
         healthPercentText = GameObject.FindGameObjectWithTag("HealthPercentText").GetComponent<TextMeshProUGUI>();
         staminaPercentText = GameObject.FindGameObjectWithTag("StaminaPercentText").GetComponent<TextMeshProUGUI>();
         SetVitalsDefault();
+        refsLoaded = true;
     }
 
     //Function to update the health depending on damage received or healing taken
@@ -97,22 +82,22 @@ public class PlayerNetworkVitals : NetworkBehaviour
         healthPercentText.text = healthPercent.ToString("P");
     }
 
-    //public void RefreshStamina()
-    //{
-    //    if (currentStamina > 0f && Input.GetKey(KeyCode.LeftShift))
-    //        currentStamina -= 10f * Time.deltaTime;
-    //    else
-    //        currentStamina += 10f * Time.deltaTime;
-    //    if (currentStamina > 100f)
-    //        currentStamina = 100f;
-    //    if (currentStamina < 0f)
-    //    {
-    //        currentStamina = 0f;
-    //    }
-    //    staminaBar.rectTransform.sizeDelta = new Vector2(currentStamina * barNumberAdjustment, staminaBar.rectTransform.sizeDelta.y);
-    //    float staminaPercent = currentStamina / maxStamina;
-    //    staminaPercentText.text = staminaPercent.ToString("P");
-    //}
+    public void RefreshStamina()
+    {
+        if (n_CurrentStamina.Value > 0f && characterControllerScript.GetisRunning)
+            n_CurrentStamina.Value -= 10f * Time.deltaTime;
+        else
+            n_CurrentStamina.Value += 10f * Time.deltaTime;
+        if (n_CurrentStamina.Value > 100f)
+            n_CurrentStamina.Value = 100f;
+        if (n_CurrentStamina.Value < 0f)
+        {
+            n_CurrentStamina.Value = 0f;
+        }
+        staminaBar.rectTransform.sizeDelta = new Vector2(n_CurrentStamina.Value * barNumberAdjustment, staminaBar.rectTransform.sizeDelta.y);
+        float staminaPercent = n_CurrentStamina.Value / n_MaxStamina.Value;
+        staminaPercentText.text = staminaPercent.ToString("P");
+    }
 
     //public void RefreshFood()
     //{
@@ -163,22 +148,20 @@ public class PlayerNetworkVitals : NetworkBehaviour
     // Update is called once per frame
     void Update()
     {
-        //RefreshStamina();
-        //RefreshFood();
-        //RefreshWater();
+        if (refsLoaded && IsOwner)
+        {
+            RefreshStamina();
+            //RefreshFood();
+            //RefreshWater();
 
-        //if (Input.GetKeyDown(KeyCode.UpArrow))
-        //    RefreshHealth(5f);
-        //if (Input.GetKeyDown(KeyCode.DownArrow))
-        //    RefreshHealth(-5f);
+            ////Setting up the variable float for something between 0 and 1 to change colors depending on current   health the player has
+            float healthPercent = n_Health.Value / n_MaxHealth.Value;
 
-        ////Setting up the variable float for something between 0 and 1 to change colors depending on current health the player has
-        //float healthPercent = currentHealth / maxHealth;
-
-        ////Setting up the colors
-        //Color fullHealthColor = new Color(0.502f, 0f, 0.0112f, 1f);
-        //Color lowHealthColor = new Color(0.7452f, 0.4042f, 0.4122f, 1f);
-        ////The actual code to lerp the colors from one to the other depending on the percent
-        //healthBar.color = Color.Lerp(lowHealthColor, fullHealthColor, healthPercent);
+            ////Setting up the colors
+            Color fullHealthColor = new Color(0.502f, 0f, 0.0112f, 1f);
+            Color lowHealthColor = new Color(0.7452f, 0.4042f, 0.4122f, 1f);
+            ////The actual code to lerp the colors from one to the other depending on the percent
+            healthBar.color = Color.Lerp(lowHealthColor, fullHealthColor, healthPercent);
+        }
     }
 }

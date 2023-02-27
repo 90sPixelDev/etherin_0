@@ -26,7 +26,7 @@ public class MenuManager : NetworkBehaviour
     public void MainMenu(GameObject playerGO)
     {
         Debug.Log("Running on MenuManager!");
-        var isMobile = playerGO.GetComponent<CharacterControllerScript>().canMove;
+        var isMobile = playerGO.GetComponent<CharacterControllerScript>().GetCanMove;
         var playerNetState = playerGO.GetComponent<PlayerNetworkState>();
         Debug.Log(isMobile);
 

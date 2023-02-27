@@ -6707,12 +6707,6 @@ RectTransform:
   m_AnchoredPosition: {x: -5, y: 0}
   m_SizeDelta: {x: -20, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!1 &1978830770 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 4206203008439415999, guid: 0b078c25882fbb14b82fafdec9f46193,
-    type: 3}
-  m_PrefabInstance: {fileID: 2054829106}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &2042112597
 GameObject:
   m_ObjectHideFlags: 0
@@ -7256,11 +7250,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: NetworkManager
       objectReference: {fileID: 0}
-    - target: {fileID: 2463272007444196857, guid: 0b6827e29b74d324ea6f361388f3e2a6,
-        type: 3}
-      propertyPath: NetworkConfig.NetworkPrefabs.Array.data[5].Prefab
-      value: 
-      objectReference: {fileID: 1978830770}
     - target: {fileID: 2463272007444196859, guid: 0b6827e29b74d324ea6f361388f3e2a6,
         type: 3}
       propertyPath: m_RootOrder

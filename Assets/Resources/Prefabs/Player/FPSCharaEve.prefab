@@ -1100,143 +1100,6 @@ MonoBehaviour:
   playerCam: {fileID: 0}
   playerCamSet: 0
   playerTagTMPro: {fileID: 0}
-  playerTag:
-    m_InternalValue:
-      utf8LengthInBytes: 14
-      bytes:
-        offset0000:
-          byte0000: 91
-          byte0001: 80
-          byte0002: 108
-          byte0003: 97
-          byte0004: 121
-          byte0005: 101
-          byte0006: 114
-          byte0007: 84
-          byte0008: 97
-          byte0009: 103
-          byte0010: 86
-          byte0011: 97
-          byte0012: 114
-          byte0013: 93
-          byte0014: 0
-          byte0015: 0
-        offset0016:
-          byte0000: 0
-          byte0001: 0
-          byte0002: 0
-          byte0003: 0
-          byte0004: 0
-          byte0005: 0
-          byte0006: 0
-          byte0007: 0
-          byte0008: 0
-          byte0009: 0
-          byte0010: 0
-          byte0011: 0
-          byte0012: 0
-          byte0013: 0
-          byte0014: 0
-          byte0015: 0
-        offset0032:
-          byte0000: 0
-          byte0001: 0
-          byte0002: 0
-          byte0003: 0
-          byte0004: 0
-          byte0005: 0
-          byte0006: 0
-          byte0007: 0
-          byte0008: 0
-          byte0009: 0
-          byte0010: 0
-          byte0011: 0
-          byte0012: 0
-          byte0013: 0
-          byte0014: 0
-          byte0015: 0
-        offset0048:
-          byte0000: 0
-          byte0001: 0
-          byte0002: 0
-          byte0003: 0
-          byte0004: 0
-          byte0005: 0
-          byte0006: 0
-          byte0007: 0
-          byte0008: 0
-          byte0009: 0
-          byte0010: 0
-          byte0011: 0
-          byte0012: 0
-          byte0013: 0
-          byte0014: 0
-          byte0015: 0
-        offset0064:
-          byte0000: 0
-          byte0001: 0
-          byte0002: 0
-          byte0003: 0
-          byte0004: 0
-          byte0005: 0
-          byte0006: 0
-          byte0007: 0
-          byte0008: 0
-          byte0009: 0
-          byte0010: 0
-          byte0011: 0
-          byte0012: 0
-          byte0013: 0
-          byte0014: 0
-          byte0015: 0
-        offset0080:
-          byte0000: 0
-          byte0001: 0
-          byte0002: 0
-          byte0003: 0
-          byte0004: 0
-          byte0005: 0
-          byte0006: 0
-          byte0007: 0
-          byte0008: 0
-          byte0009: 0
-          byte0010: 0
-          byte0011: 0
-          byte0012: 0
-          byte0013: 0
-          byte0014: 0
-          byte0015: 0
-        offset0096:
-          byte0000: 0
-          byte0001: 0
-          byte0002: 0
-          byte0003: 0
-          byte0004: 0
-          byte0005: 0
-          byte0006: 0
-          byte0007: 0
-          byte0008: 0
-          byte0009: 0
-          byte0010: 0
-          byte0011: 0
-          byte0012: 0
-          byte0013: 0
-          byte0014: 0
-          byte0015: 0
-        byte0112: 0
-        byte0113: 0
-        byte0114: 0
-        byte0115: 0
-        byte0116: 0
-        byte0117: 0
-        byte0118: 0
-        byte0119: 0
-        byte0120: 0
-        byte0121: 0
-        byte0122: 0
-        byte0123: 0
-        byte0124: 0
-        byte0125: 0
 --- !u!1 &4573824739828832039
 GameObject:
   m_ObjectHideFlags: 0
@@ -1246,7 +1109,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4573824739828832038}
-  - component: {fileID: 7296514257536425946}
   m_Layer: 0
   m_Name: Player Body
   m_TagString: Untagged
@@ -1271,19 +1133,6 @@ Transform:
   m_Father: {fileID: 7649414077001433835}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &7296514257536425946
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4573824739828832039}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 262d0774fefb37341b5da3b1bc2a11aa, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  playerBody: {fileID: 9192200382953899140}
 --- !u!1 &4573824740143071573
 GameObject:
   m_ObjectHideFlags: 0
@@ -1325,6 +1174,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4573824741031633353}
   - component: {fileID: 6193651677069193855}
+  - component: {fileID: 6084446550776923822}
   m_Layer: 0
   m_Name: Inventory
   m_TagString: Untagged
@@ -1360,6 +1210,32 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerInventory: {fileID: 11400000, guid: 3e58755948542674d8130bda8b759425, type: 2}
+  playerItems: []
+  playerSlots: []
+  playerItemSlotsParent: {fileID: 0}
+  clientLoaded: 0
+--- !u!114 &6084446550776923822
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4573824741031633352}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a1609e0489c8e184794521dbb9a9a6b2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  uiSlots: []
+  playerNetworkState: {fileID: 0}
+  selectionManager: {fileID: 0}
+  characterControllerScript: {fileID: 0}
+  currWorldItem: {fileID: 0}
+  loot: {fileID: 0}
+  lootTitle: {fileID: 0}
+  lootWindowParent: {fileID: 0}
+  contentWindow: {fileID: 0}
+  slotPrefab: {fileID: 0}
 --- !u!1 &4658268230559605740
 GameObject:
   m_ObjectHideFlags: 0
@@ -1370,6 +1246,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5139998247184791809}
   - component: {fileID: 1505931384101296289}
+  - component: {fileID: 8294831668057312489}
   m_Layer: 0
   m_Name: Mesh
   m_TagString: Untagged
@@ -1510,6 +1387,18 @@ SkinnedMeshRenderer:
     m_Center: {x: 0.00022393465, y: -0.15194556, z: -0.004155837}
     m_Extent: {x: 0.6403573, y: 0.726725, z: 0.13059133}
   m_DirtyAABB: 0
+--- !u!114 &8294831668057312489
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4658268230559605740}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 262d0774fefb37341b5da3b1bc2a11aa, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &4718078841148984284
 GameObject:
   m_ObjectHideFlags: 0
@@ -2739,7 +2628,19 @@ MonoBehaviour:
     m_ActionId: cb718b0b-ddb0-49af-b416-f9553a45d8d4
     m_ActionName: Player/Pause[/Keyboard/escape]
   - m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 7649414077001433832}
+        m_TargetAssemblyTypeName: CharacterControllerScript, Assembly-CSharp
+        m_MethodName: OnRun
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
     m_ActionId: 46a12602-04c2-4525-9c8a-4ee2f7c69683
     m_ActionName: Player/Run[/Keyboard/leftShift]
   - m_PersistentCalls:
@@ -2806,6 +2707,22 @@ MonoBehaviour:
         m_CallState: 2
     m_ActionId: bd229f04-2295-46c1-80ee-0270673e14c6
     m_ActionName: UI/MenuUI[/DualShock4GamepadHID/start,/Keyboard/escape]
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 7649414077001433832}
+        m_TargetAssemblyTypeName: CharacterControllerScript, Assembly-CSharp
+        m_MethodName: OnInteract
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: c78dbeaf-111f-48cc-83b0-995685e3cf25
+    m_ActionName: Player/Interact[/Keyboard/e]
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: Keyboard&Mouse
   m_DefaultActionMap: Player
@@ -2830,6 +2747,8 @@ MonoBehaviour:
   playerNetworkState: {fileID: 0}
   animator: {fileID: 0}
   playerTag: {fileID: 2529387573844279567}
+  selectionManager: {fileID: 0}
+  lootContainerNetwork: {fileID: 0}
   currentSpeed: 5
   walkSpeed: 5
   runSpeed: 12
@@ -2909,6 +2828,8 @@ MonoBehaviour:
   n_inMenu:
     m_InternalValue: 0
   n_inMainMenu:
+    m_InternalValue: 0
+  n_inLootMenu:
     m_InternalValue: 0
 --- !u!114 &4573824741219371097
 MonoBehaviour:

@@ -1,42 +1,31 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
 
-public class InventoryClickHandler : MonoBehaviour
+public class InventorySlotControls : NetworkBehaviour
 {
-    public EventSystem eventSystem;
+    [Header("UI")]
     public UIItemSlot cursor;
 
+    [Header("Event Info")]
+    public EventSystem eventSystem;
     public PointerEventData pointer;
     public GraphicRaycaster raycaster;
+
+    [Header("Player Controls")]
+    private string controlScheme;
 
     public bool isCarryingItem { get { return (cursor.itemSlot.hasItem); } }
 
     public void Awake()
     {
-        eventSystem = GameObject.FindGameObjectWithTag("PlayerUI").GetComponent<EventSystem>();
         raycaster = GetComponent<GraphicRaycaster>();
-    }
 
-
-    public void UIItemClick()
-    {
-        // Set up new pointer event at mouse position
-        pointer = new PointerEventData(eventSystem);
-        pointer.position = Mouse.current.position.ReadValue();
-
-        // Create a list of raycast results
-        List<RaycastResult> results = new List<RaycastResult>();
-
-        // Raycast from our pointer and pass results to list
-        raycaster.Raycast(pointer, results);
-
-        // Only need first thing raycast hits for our needs
-        if (results.Count > 0 && results[0].gameObject.tag == "UIItemSlot")
-            ProcessClick(results[0].gameObject.GetComponent<UIItemSlot>());
+        eventSystem = GameObject.FindGameObjectWithTag("PlayerUI").GetComponent<EventSystem>();
     }
 
     public void ProcessClick(UIItemSlot pressedUISlot)

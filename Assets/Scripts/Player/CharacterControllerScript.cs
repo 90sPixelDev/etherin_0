@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.UI;
 using UnityEngine.EventSystems;
+using SmartConsole;
 
 [RequireComponent(typeof(NetworkObject))]
 [RequireComponent(typeof(ClientNetworkTransform))]
@@ -14,63 +15,65 @@ public class CharacterControllerScript : NetworkBehaviour
         IDLE,
         WALK,
         WALK_REVERSE,
+        RUN,
+        RUN_REVERSE,
         WALK_LEFT,
         WALK_RIGHT
     }
 
-    [SerializeField] private CharacterController charaController;
-    [SerializeField] private PlayerInput playerInput;
-    [SerializeField] private string currControlScheme;
-    [SerializeField] private InputDevice currDevice;
-    [SerializeField] private PlayerNetworkVitals playerNetworkVitals;
-    [SerializeField] private PlayerNetworkState playerNetworkState;
-    [SerializeField] private Animator animator;
-    [SerializeField] private PlayerTag playerTag;
+    [SerializeField] CharacterController charaController;
+    [SerializeField] PlayerInput playerInput;
+    [SerializeField] string currControlScheme;
+    [SerializeField] InputDevice currDevice;
+    [SerializeField] PlayerNetworkVitals playerNetworkVitals;
+    [SerializeField] PlayerNetworkState playerNetworkState;
+    [SerializeField] Animator animator;
+    [SerializeField] PlayerTag playerTag;
+    [SerializeField] SelectionManager selectionManager;
+    [SerializeField] LootContainerNetwork lootContainerNetwork;
     float xRotation, yRotation;
 
     [Header("Player Movement Speeds")]
-    [SerializeField] private float currentSpeed;
-    [SerializeField] private float walkSpeed;
-    [SerializeField] private float runSpeed;
+    [SerializeField] float currentSpeed;
+    const float walkSpeed = 5;
+    const float runSpeed = 10;
     [SerializeField]
     private NetworkVariable<PlayerAnimState> netAnimState = new NetworkVariable<PlayerAnimState>(PlayerAnimState.IDLE, NetworkVariableReadPermission.Owner, NetworkVariableWritePermission.Owner);
-    [Header("Gravity Force")]
-    [SerializeField] private float gravity = -9.81f;
-    Vector3 velocity;
-    [Header("On Ground Information")]
-    [SerializeField] private float groundDistance = 0.07f;
-    [SerializeField] private bool isGrounded;
-    [SerializeField] private Transform groundCheck;
-    [SerializeField] private LayerMask groundMask;
-    [SerializeField] private bool _isRunning = false;
-    public bool GetisRunning { get => _isRunning; set => _isRunning = value; }
-    [SerializeField] private bool isOnSlope;
 
-    [SerializeField] public int jumpheight = 2;
+    [Header("Gravity Force")]
+    float gravity = -9.81f;
+    Vector3 velocity;
+
+    [Header("On Ground Information")]
+    [SerializeField] float groundDistance = 0.07f;
+    [SerializeField] int jumpheight = 2;
+    [SerializeField] Transform groundCheck;
+    [SerializeField] LayerMask groundMask;
+
     [Header("Conditions")]
-    [SerializeField] private bool _IsMobile = true;
-    public bool canMove { get => _IsMobile; set => _IsMobile = value; }
-    [SerializeField] private bool _CanLook = true;
-    public bool canLook { get => _CanLook; set => _CanLook = value; }
+    [SerializeField] bool _IsMobile = true;
+    public bool GetCanMove { get => _IsMobile; set => _IsMobile = value; }
+    [SerializeField] bool _CanLook = true;
+    public bool GetCanLook { get => _CanLook; set => _CanLook = value; }
+    [SerializeField] bool _isRunning = false;
+    public bool GetisRunning { get => _isRunning; set => _isRunning = value; }
+    [SerializeField] bool isGrounded;
+    [SerializeField] bool isOnSlope;
 
     [Header("References Extra")]
-    [SerializeField] public Transform fpsCam;
+    [SerializeField] Transform fpsCam;
     private Vector2 moveInput;
     private Vector2 lookPos;
     public bool refsLoaded = false;
 
-    [Header("UI References")]
-    public GameObject mainMenuUI;
-    public GameObject playerInvMenuUI;
-    public GameObject debugMenuUI;
-    public GameObject pointerUI;
+    //[Header("UI References")]
+    private GameObject mainMenuUI;
+    private GameObject playerInvMenuUI;
+    private GameObject debugMenuUI;
+    private GameObject pointerUI;
     private GameObject mainMenuFirstSelect;
     private GameObject playerInvMenuFirstSelect;
     private GameObject debugMenuFirstSelect;
-
-    [Header("DEBUG")]
-    [SerializeField] GameObject testObject;
-
 
     private void Awake()
     {
@@ -78,6 +81,7 @@ public class CharacterControllerScript : NetworkBehaviour
         playerNetworkVitals = GetComponent<PlayerNetworkVitals>();
         playerNetworkState = GetComponent<PlayerNetworkState>();
         playerInput = GetComponent<PlayerInput>();
+        lootContainerNetwork = GetComponentInChildren<LootContainerNetwork>();
         animator = GetComponentInChildren<Animator>();
     }
 
@@ -91,6 +95,7 @@ public class CharacterControllerScript : NetworkBehaviour
 
             return;
         }
+
 
         playerInput.enabled = true;
         charaController.enabled = true;
@@ -110,6 +115,7 @@ public class CharacterControllerScript : NetworkBehaviour
         if (refsLoaded) return;
 
         fpsCam = GameObject.FindGameObjectWithTag("FPCam").transform;
+        selectionManager = fpsCam.GetComponent<SelectionManager>();
         mainMenuUI = GameObject.FindGameObjectWithTag("MainUI").transform.GetChild(0).gameObject;
         playerInvMenuUI = GameObject.FindGameObjectWithTag("PlayerInvUI").transform.GetChild(0).gameObject;
         pointerUI = GameObject.FindGameObjectWithTag("PointerUI").transform.GetChild(0).gameObject; ;
@@ -127,19 +133,19 @@ public class CharacterControllerScript : NetworkBehaviour
     }
 
     // Update is called once per frame
-    void FixedUpdate()
+    private void Update()
     {
         //return;
         if (IsOwner && refsLoaded)
         {
-            if (canMove && canLook)
+            if (GetCanMove && GetCanLook)
             {
                 PlayerMove();
                 PlayerLook();
                 CheckIfOnGround();
                 CameraFollowPlayer();
             }
-            else if (canMove)
+            else if (GetCanMove)
             {
                 PlayerMove();
                 CheckIfOnGround();
@@ -151,26 +157,30 @@ public class CharacterControllerScript : NetworkBehaviour
             {
                 velocity.y = -1f;
             }
+
+
             charaController.Move(velocity * Time.deltaTime);
 
-            if (IsClient)
+            if (playerNetworkVitals.n_CurrentStamina.Value <= 0 || !_isRunning)
             {
-                ClientAnimVisualsServerRpc();
+                SetToWalkSpeed();
+            }
+            else if (playerNetworkVitals.n_CurrentStamina.Value > 0 && _isRunning)
+            {
+                SetToRunSpeed();
             }
 
-            //To configure to run when holding "run"
-            //if (Input.GetButton("Run") && PlayerVitals.currentStamina > 1f)
-            //{
-            //    isRunning = true;
-            //    currentSpeed = runSpeed;
-            //}
-            //else
-            //{
-            //    isRunning = false;
-            //    currentSpeed = walkSpeed;
-            //}
-            //}
+            AnimVisualsServerRpc();
         }
+    }
+
+    private void SetToWalkSpeed()
+    {
+        currentSpeed = walkSpeed;
+    }
+    private void SetToRunSpeed()
+    {
+        currentSpeed = runSpeed;
     }
 
     public void OnTestNetworkVarByKeyPress(InputAction.CallbackContext ctx)
@@ -183,7 +193,7 @@ public class CharacterControllerScript : NetworkBehaviour
     public void CameraFollowPlayer()
     {
         if (!(refsLoaded && IsOwner)) return;
-        fpsCam.position = transform.position + new Vector3(0, 3.5f, 0);
+        fpsCam.position = transform.position + new Vector3(0, 3.75f, 0.25f);
     }
 
     public void OnMove(InputAction.CallbackContext ctx)
@@ -206,9 +216,23 @@ public class CharacterControllerScript : NetworkBehaviour
         moveDirection.z = moveInput.y;
         charaController.Move(transform.TransformDirection(moveDirection) * currentSpeed * Time.deltaTime);
 
-        if (moveInput.y > 0)
+        if (moveDirection.x <= 0 && moveDirection.z <= 0)
+        {
+            _isRunning = false;
+        }
+
+        SetNetAnimState();
+    }
+
+    private void SetNetAnimState()
+    {
+        if (moveInput.y > 0 && !_isRunning)
         {
             netAnimState.Value = PlayerAnimState.WALK;
+        }
+        else if(moveInput.y > 0 && _isRunning)
+        {
+            netAnimState.Value = PlayerAnimState.RUN;
         }
         else if (moveInput.x < 0)
         {
@@ -243,6 +267,11 @@ public class CharacterControllerScript : NetworkBehaviour
             animator.SetFloat("DirectionY", 1f);
             animator.SetFloat("DirectionX", 0f);
         }
+        else if (netAnimState.Value == PlayerAnimState.RUN)
+        {
+            animator.SetFloat("DirectionY", 2f);
+            animator.SetFloat("DirectionX", 0f);
+        }
         else if (netAnimState.Value == PlayerAnimState.IDLE)
         {
             animator.SetFloat("DirectionY", 0f);
@@ -268,7 +297,7 @@ public class CharacterControllerScript : NetworkBehaviour
 
 
     [ServerRpc]
-    public void ClientAnimVisualsServerRpc()
+    public void AnimVisualsServerRpc()
     {
         AnimVisuals();
     }
@@ -283,6 +312,8 @@ public class CharacterControllerScript : NetworkBehaviour
     public void OnJump(InputAction.CallbackContext ctx)
     {
         if (!IsOwner) return;
+
+        var runValue = ctx.ReadValueAsButton();
 
         if (ctx.performed)
         {
@@ -319,11 +350,19 @@ public class CharacterControllerScript : NetworkBehaviour
         transform.rotation = Quaternion.Euler(0, yRotation, 0);
     }
 
-    public void OnSprint(InputAction.CallbackContext ctx)
+    public void OnRun(InputAction.CallbackContext ctx)
     {
         if (!IsOwner) return;
 
-        currentSpeed *= 1.35f;
+        if (ctx.performed)
+        {
+            _isRunning = true;
+
+        }
+        if (ctx.canceled)
+        {
+            _isRunning = false;
+        }
     }
 
     public void OnMenuUI(InputAction.CallbackContext ctx)
@@ -332,11 +371,24 @@ public class CharacterControllerScript : NetworkBehaviour
 
         if (ctx.performed)
         {
-            Debug.Log("MENU!");
-
             MenuUI();
         }
 
+    }
+
+    public void OnInteract(InputAction.CallbackContext ctx)
+    {
+        if (!IsOwner) return;
+
+        if (ctx.performed)
+        {
+            if (selectionManager.isLookingAtSelectable && selectionManager.selectable != null && selectionManager.selectableItemFocusType == SelectionManager.SelectableItemFocusType.LOOT)
+            {
+                Debug.Log("INTERACTED WITH LOOT!");
+                lootContainerNetwork.CommandLootUIServerRpc(NetworkManager.Singleton.LocalClientId);
+
+            }
+        }
     }
 
     public void OnInventoryUI(InputAction.CallbackContext ctx)
@@ -345,18 +397,19 @@ public class CharacterControllerScript : NetworkBehaviour
 
         if (ctx.performed)
         {
-            Debug.Log("INVENTORY!");
-
             InventoryUI();
         }
     }
 
-    private void InventoryUI()
+    public void InventoryUI()
     {
         if (playerNetworkState.n_inMainMenu.Value)
         {
-            Debug.Log("Exiting MainMenu through Inventory Button!");
             MenuUI();
+        }
+        if (playerNetworkState.n_inLootMenu.Value)
+        {
+            lootContainerNetwork.CloseLoot();
         }
 
         // Turning on Inventory
@@ -393,7 +446,6 @@ public class CharacterControllerScript : NetworkBehaviour
     {
         if (playerNetworkState.n_inMenu.Value)
         {
-            Debug.Log("Exiting Inventory through MainMenu Button!");
             InventoryUI();
         }
 

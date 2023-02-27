@@ -11,21 +11,10 @@ public class PlayerNetworkManager : NetworkBehaviour
     private NetworkList<PlayerNetworkObjectReference> _players;
     public NetworkList<PlayerNetworkObjectReference> Players { get => _players; set => _players = value; }
 
-    //[Header("Player References")]
-    //[SerializeField] private GameObject mainMenuUI;
-    //[SerializeField] private GameObject playerInvMenuUI;
-    //[SerializeField] private GameObject debugMenuUI;
-    //[SerializeField] private GameObject pointerUI;
-
     private void Awake()
     {
         DontDestroyOnLoad(gameObject);
         Players = new NetworkList<PlayerNetworkObjectReference>();
-
-        //mainMenuUI = GameObject.FindGameObjectWithTag("MainUI");
-        //playerInvMenuUI = GameObject.FindGameObjectWithTag("PlayerInvUI");
-        //pointerUI = GameObject.Find("PointerUI");
-        //debugMenuUI = GameObject.Find("DebugMenuUI");
     }
 
     public override void OnNetworkSpawn()
@@ -59,7 +48,6 @@ public class PlayerNetworkManager : NetworkBehaviour
 
     private void HandleClientConnected(ulong clientId)
     {
-        Debug.Log("Running HandleClientConnected!");
         Players.Add(new PlayerNetworkObjectReference(clientId, clientId.ToString()));
 
         //var playerCharaScript = NetworkManager.Singleton.ConnectedClients[clientId].PlayerObject.GetComponent<CharacterControllerScript>();
@@ -84,8 +72,6 @@ public class PlayerNetworkManager : NetworkBehaviour
 
     public void SendReferences()
     {
-        Debug.Log("Running SendReferences Manual!");
-
         var playerCharaScript = NetworkManager.Singleton.LocalClient.PlayerObject.GetComponent<CharacterControllerScript>();
 
         //var playerCharaScript = NetworkManager.Singleton.ConnectedClients[clientId].PlayerObject.GetComponent<CharacterControllerScript>();

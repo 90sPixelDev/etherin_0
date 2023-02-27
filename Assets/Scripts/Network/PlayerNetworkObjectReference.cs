@@ -8,9 +8,9 @@ using UnityEngine;
 public struct PlayerNetworkObjectReference: INetworkSerializable, IEquatable<PlayerNetworkObjectReference>
 {
     public ulong ClientId;
-    public FixedString128Bytes ClientName;
+    public NetworkString ClientName;
 
-    public PlayerNetworkObjectReference(ulong clientId, FixedString128Bytes clientName)
+    public PlayerNetworkObjectReference(ulong clientId, NetworkString clientName)
     {
         ClientId = clientId;
         ClientName = clientName;

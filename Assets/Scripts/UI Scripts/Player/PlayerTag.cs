@@ -1,6 +1,4 @@
-using System;
 using TMPro;
-using Unity.Collections;
 using Unity.Netcode;
 using UnityEngine;
 
@@ -13,16 +11,20 @@ public class PlayerTag : NetworkBehaviour
     [SerializeField]
     private TextMeshProUGUI playerTagTMPro;
     [SerializeField]
-    NetworkVariable<FixedString128Bytes> playerTag = new NetworkVariable<FixedString128Bytes>();
+    NetworkVariable<NetworkString> m_playerTag = new NetworkVariable<NetworkString>();
 
     public override void OnNetworkSpawn()
     {
-        playerTag.OnValueChanged += OnPlayerTagChanged;
+        m_playerTag.OnValueChanged += OnPlayerTagChanged;
     }
 
-    private void OnPlayerTagChanged(FixedString128Bytes previousValue, FixedString128Bytes newValue)
+    private void OnPlayerTagChanged(NetworkString previousValue, NetworkString newValue)
     {
-        SetPlayerTag(newValue.ToString());
+        SetPlayerTag();
+    }
+    public void SetPlayerTag()
+    {
+        playerTagTMPro.text = m_playerTag.Value;
     }
 
     private void Start()
@@ -38,40 +40,26 @@ public class PlayerTag : NetworkBehaviour
 
         SetPlayerTagColor();
         UpdatePlayerTagVarServerRpc();
+        SetPlayerTag();
 
         playerCamSet = true;
-        if (IsLocalPlayer) transform.GetChild(0).gameObject.SetActive(false);
-    }
-
-    public void SetPlayerTag(string newVal = "default")
-    {
-        Debug.Log("SETTING TAG!");
-        playerTagTMPro.text = playerTag.Value.ToString();
-    }
-
-    public void InitializePlayerTag()
-    {
-        Debug.Log("Initializing Player Tag!");
-        playerTag.Value = $"Player: {GetComponentInParent<NetworkObject>().OwnerClientId + 1}";
     }
 
     [ServerRpc(RequireOwnership=false)]
     public void UpdatePlayerTagVarServerRpc()
     {
-        Debug.Log("1st SET Player Tag!");
-        playerTag.Value = $"Player: {GetComponentInParent<NetworkObject>().OwnerClientId + 1}";
+        m_playerTag.Value = $"Player: {OwnerClientId + 1}";
     }
 
     [ServerRpc(RequireOwnership=false)]
     public void SetPlayerTagInMenuServerRpc()
     {
-        Debug.Log("Changing Player Tag!");
-        playerTag.Value = $"<sprite name=menu> Player: {GetComponentInParent<NetworkObject>().OwnerClientId + 1}";
+        m_playerTag.Value = $"<sprite name=menu> Player: {OwnerClientId + 1}";
     }
 
     private void SetPlayerTagColor()
     {
-        var ownerId = GetComponentInParent<NetworkObject>().OwnerClientId;
+        var ownerId = OwnerClientId;
         switch (ownerId)
         {
             case 0:

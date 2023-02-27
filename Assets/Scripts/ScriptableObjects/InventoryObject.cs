@@ -83,9 +83,9 @@ public class ItemSlot
         ItemObject _item = Resources.Load<ItemObject>(string.Format($"ScriptableObjects/Items/{itemName}")); // Load item from resources folder by the itemName
 
         if (_item == null)
-            Debug.LogWarning(string.Format("Could not find \"{0}\". Item Slot is empty.", itemName));
+            Debug.LogWarning(string.Format("Could not find \"{0}\". WorldItem Slot is empty.", itemName));
         else
-            Debug.Log($"Found {_item.name}");
+            Debug.Log($"Found {itemName} : {_item.name}");
         return _item;
     }
 

@@ -19,6 +19,9 @@ TagManager:
   - PointerUI
   - DebugMenuUI
   - MouseContainer
+  - item
+  - loot
+  - LootUI
   layers:
   - Default
   - TransparentFX

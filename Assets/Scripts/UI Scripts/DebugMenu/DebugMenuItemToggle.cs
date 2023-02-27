@@ -25,7 +25,7 @@ public class DebugMenuItemToggle : MonoBehaviour
     //    if (toggle.isOn)
     //    {
     //        debugMenuManager.currentItem = itemObject;
-    //        Debug.Log(string.Format("Toggle Clicked. Item Name set to: {0}", debugMenuManager.currentItem.itemName));
+    //        Debug.Log(string.Format("Toggle Clicked. WorldItem Name set to: {0}", debugMenuManager.currentItem.itemName));
     //    }
     //}
 }

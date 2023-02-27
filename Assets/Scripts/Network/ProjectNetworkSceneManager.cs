@@ -35,11 +35,16 @@ public class ProjectNetworkSceneManager : NetworkBehaviour
         var networkSceneManager = netManager.SceneManager;
         NetworkManager.Singleton.SceneManager.SetClientSynchronizationMode(LoadSceneMode.Single);
 
-        if (IsServer)
+        if (IsServer && !IsHost)
         {
             Debug.Log($"Starting Server with IP of:{netManager.GetComponent<UnityTransport>().ConnectionData.Address}");
         }
-        if (IsClient)
+        else if (IsHost)
+        {
+            Debug.Log($"Starting Server with IP of:{netManager.GetComponent<UnityTransport>().ConnectionData.Address}");
+            Debug.Log($"Server IP:{netManager.GetComponent<UnityTransport>().ConnectionData.Address}");
+        }
+        else if (IsClient && !IsHost)
         {
             Debug.Log($"Connecting to Server with IP of: {netManager.GetComponent<UnityTransport>().ConnectionData.ServerListenAddress}");
             Debug.Log($"Server IP:{netManager.GetComponent<UnityTransport>().ConnectionData.Address}");
@@ -91,7 +96,6 @@ public class ProjectNetworkSceneManager : NetworkBehaviour
 
     private void SetReferences(ulong client)
     {
-        Debug.Log("Setting References!");
         var playerGO = NetworkManager.Singleton.ConnectedClients[client].PlayerObject;
 
         ClientRpcParams clientRpcParams = new()
@@ -103,10 +107,7 @@ public class ProjectNetworkSceneManager : NetworkBehaviour
         playerGO.GetComponent<PlayerNetworkVitals>().SetVitalsReferencesClientRPC(clientRpcParams);
         playerGO.GetComponentInChildren<PlayerInventory>().SetInventoryReferenceClientRpc();
         playerGO.GetComponentInChildren<PlayerTag>().SetPlayerCamRefClientRpc();
-
-        playerGO.GetComponentInChildren<PlayerTag>().UpdatePlayerTagVarServerRpc();
-
-        Debug.Log($"Refs are now set for Client:{client}!");
+        playerGO.GetComponentInChildren<LootContainerNetwork>().SetLootReferencesClientRpc();
     }
 
     private void Awake()

@@ -8,10 +8,10 @@ using UnityEngine.UI;
 public class UIItemSlot : MonoBehaviour
 {
 
-    [Header("Item Info")]
+    [Header("WorldItem Info")]
     public ItemSlot itemSlot;
 
-    [Header("Item Info References")]
+    [Header("WorldItem Info References")]
     public TextMeshProUGUI amtText;
     public Image conditionBar;
 
@@ -22,22 +22,27 @@ public class UIItemSlot : MonoBehaviour
 
     [Header("Pointer")]
     public bool isCursor = false;
-    public InventoryClickHandler invClickHandler;
+    public InventorySlotControls invClickHandler;
 
     private void OnEnable()
     {
-        invClickHandler = GameObject.FindGameObjectWithTag("AllPlayerUI").GetComponent<InventoryClickHandler>();
+        invClickHandler = GameObject.FindGameObjectWithTag("AllPlayerUI").GetComponent<InventorySlotControls>();
 
         if (isCursor) return;
         slotButton = GetComponent<Button>();
         slotButton.onClick.AddListener(() => invClickHandler.ProcessClick(this));
     }
-
-    private void Awake()
+    private void OnDisable()
     {
+        slotButton.onClick.RemoveAllListeners();
+    }
+
+
+    //private void Awake()
+    //{
         //itemSlot = new ItemSlot();
         //itemSlot.AttachUI(this);
-    }
+    //}
 
     // VISUAL UPDATES
     public void RefreshSlot()

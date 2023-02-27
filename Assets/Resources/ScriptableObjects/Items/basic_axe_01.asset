@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 6c370f9dee090f14398ba4d54224c96e, type: 3}
-  m_Name: axe_01
+  m_Name: basic_axe_01
   m_EditorClassIdentifier: 
   itemType: 2
   itemName: Basic Axe

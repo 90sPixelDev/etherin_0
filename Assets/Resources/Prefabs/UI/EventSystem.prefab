@@ -478,8 +478,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0.5}
   m_AnchorMax: {x: 0, y: 0.5}
-  m_AnchoredPosition: {x: 250, y: 0}
-  m_SizeDelta: {x: 500, y: 700}
+  m_AnchoredPosition: {x: 267.5, y: 0}
+  m_SizeDelta: {x: 535, y: 700}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &2257918431819286756
 GameObject:
@@ -2178,16 +2178,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d441f24dbb15deb499d7202619f63633, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  icon: {fileID: 2044088576790924678}
-  amtText: {fileID: 7542754970057402364}
-  conditionBar: {fileID: 2956239019729009359}
-  slotRect: {fileID: 7359706220149165167}
   itemSlot:
     item: {fileID: 0}
     uiItemSlot: {fileID: 0}
-  pointerItemSlot:
-    item: {fileID: 0}
-    uiItemSlot: {fileID: 8243980290531673464}
+    _amount: 0
+    _condition: 0
+  amtText: {fileID: 7542754970057402364}
+  conditionBar: {fileID: 2956239019729009359}
+  icon: {fileID: 2044088576790924678}
+  slotRect: {fileID: 7359706220149165167}
   slotButton: {fileID: 0}
   isCursor: 1
   invClickHandler: {fileID: 0}
@@ -5800,8 +5799,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8a12d1790c2900f4396ed3f6a966e1b8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  eventSystem: {fileID: 0}
   cursor: {fileID: 8243980290531673464}
+  eventSystem: {fileID: 0}
   raycaster: {fileID: 0}
 --- !u!1 &8430603928586503967
 GameObject:
@@ -11377,7 +11376,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &8430603929267832194
 RectTransform:
   m_ObjectHideFlags: 0
@@ -14278,7 +14277,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &8430603929590454636
 RectTransform:
   m_ObjectHideFlags: 0
